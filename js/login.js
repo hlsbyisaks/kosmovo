@@ -1,3 +1,5 @@
+loginPage()
+
 function login() {
     if ($('#username').val() && $('#password').val()) {
         let username = $('#username').val()
@@ -28,26 +30,37 @@ function login() {
 
 
 /* Elements */
-$("<div>", {
-    'id': 'loginContainer',
-    appendTo:'#login_page'
-})
+function loginPage() {
+    $('#login_page').html('')
 
-$("<input>", {
-    'id': 'username',
-    type:'text',
-    appendTo:'#loginContainer'
-})
-
-$("<input>", {
-    'id': 'password',
-    type:'text',
-    appendTo:'#loginContainer'
-})
-
-$("<input>", {
-    value: 'Login',
-    'id': 'submit',
-    type:'button',
-    appendTo:'#loginContainer',
-}).click(login)
+    $("<div>", {
+        'id': 'loginContainer',
+        appendTo:'#login_page'
+    })
+    
+    $("<input>", {
+        'id': 'username',
+        type:'text',
+        appendTo:'#loginContainer'
+    })
+    
+    $("<input>", {
+        'id': 'password',
+        type:'text',
+        appendTo:'#loginContainer'
+    })
+    
+    $("<input>", {
+        value: 'Login',
+        'id': 'login',
+        type:'button',
+        appendTo:'#loginContainer',
+    }).click(login)
+    
+    $("<input>", {
+        value: 'Register',
+        'id': 'register',
+        type:'button',
+        appendTo:'#loginContainer',
+    }).click(registerPage)
+}
