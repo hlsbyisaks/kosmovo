@@ -1,14 +1,40 @@
 function login() {
-    console.log('login')
+    if ($('#username').val() && $('#password').val()) {
+        let username = $('#username').val()
+        let password = $('#password').val()
+
+        $.get('php/login.php', {
+            username: username,
+            password: password
+        })
+        .done((data) => {
+            data = JSON.parse(data)
+            console.log(data)
+
+            if (data[0] != undefined) {
+                console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
+
+                /* send to game page with userId = data[0].userId
+                Set cookie login=true and userid */
+
+            } else {
+                prompt('Username and password does not match')
+            }
+        })
+    } else {
+        prompt('Please fill both forms')
+    }
 }
 
+
+/* Elements */
 $("<div>", {
     'id': 'loginContainer',
     appendTo:'#login_page'
 })
 
 $("<input>", {
-    'id': 'userName',
+    'id': 'username',
     type:'text',
     appendTo:'#loginContainer'
 })
