@@ -1,11 +1,4 @@
 # kosmovo
 blablabla
 sajdfpadg
-
-
-
-
-
-
-
-osndgksdnghlkösdfh
+ISAK
