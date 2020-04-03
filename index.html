@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Page Title</title>
+<link rel='stylesheet' href="main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
 <body>
     <div id="login_page"></div>
-    <div id="register_page"></div>
     <div id="game_page">
-        <div id="question_page"></div>
+        <div class="header">
+            <div>
+                <div class="user_icon"></div>
+                <div class="user_name">Max</div>
+            </div>
+            <div class="user_score"></div>
+        </div>
+        <div id="map"></div>
     </div>
     <div id="scoreboard_page"></div>
     <div id="admin_page"></div>
+    <script src="js/jquery.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2pZS1u2241lDs4ZAoynkLTKOHhQgR5ak&callback=initMap"></script>
+    <script src="js/googleAPI.js"></script>
+    <script src="js/page.js"></script>
+    <script src="js/createUser.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/isak.js"></script>
 </body>
 </html>

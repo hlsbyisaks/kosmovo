@@ -1,0 +1,56 @@
+/* ALL PAGE */
+:root{
+    --main-red-color: #DC2521;
+    --main-blue-color: #311B42;
+    --main-lightblue-color: #9c98BD;
+    --main-white-color: #FEFCE7;
+    --main-yellow-color: #F3952A;
+    
+}
+
+body{
+    margin: 0px;
+}
+
+body > div {
+    width: 100vw;
+    height: 100vh;
+}
+
+
+
+/* LoginPage */
+
+#login_page{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginContainer{
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+
+/* GAME PAGE */
+
+.header{
+    width: 100vw;
+    height: 10vh;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+}
+
+#map{
+    height: 90vh;
+}
+
+/* SCOREBOARD PAGE */
+
+/* ADMIN PAGE */
+
+
