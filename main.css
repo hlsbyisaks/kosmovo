@@ -47,6 +47,21 @@ body > div {
 
 #map{
     height: 90vh;
+    z-index: 1;
+}
+
+.startQuestion{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 5vw;
+    top: 88vh;
+    height: 10vh;
+    width: 90vw;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+    z-index: 2;
 }
 
 /* SCOREBOARD PAGE */
