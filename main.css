@@ -30,10 +30,26 @@ body > div {
 }
 
 #loginContainer{
-    background-color: aqua;
+    background-color: var(--main-red-color);
     display: flex;
     flex-direction: column;
     padding: 50px;
+}
+
+#loginContainer > div, #loginContainer > input{
+    margin-bottom: 2px;
+}
+
+.button {
+    background-color: var(--main-white-color);
+    color: var(--main-yellow-color);
+    font-size: 20px;
+    padding: 5px;
+    border: 0px;
+}
+
+.button:hover {
+    color: var(--main-lightblue-color);
 }
 
 /* GAME PAGE */

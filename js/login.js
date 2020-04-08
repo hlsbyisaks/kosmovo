@@ -42,21 +42,29 @@ function loginPage() {
         'id': 'loginContainer',
         appendTo:'#login_page'
     })
+
+    $("<div>", {
+        'id': 'logo',
+        appendTo:'#loginContainer'
+    }).css({'background-image': 'url(img/logo.png)', 'height': '150px', 'background-size': 'contain'})
     
     $("<input>", {
         'id': 'username',
+        placeholder: 'Username',
         type:'text',
         appendTo:'#loginContainer'
     })
     
     $("<input>", {
         'id': 'password',
-        type:'text',
+        placeholder: 'Password',
+        type:'password',
         appendTo:'#loginContainer'
     })
     
     $("<input>", {
         value: 'Login',
+        class: 'button',
         'id': 'login',
         type:'button',
         appendTo:'#loginContainer',
@@ -64,6 +72,7 @@ function loginPage() {
     
     $("<input>", {
         value: 'Register',
+        class: 'button',
         'id': 'register',
         type:'button',
         appendTo:'#loginContainer',

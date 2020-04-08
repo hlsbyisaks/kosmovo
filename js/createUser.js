@@ -31,27 +31,36 @@ function registerPage() {
         'id': 'loginContainer',
         appendTo:'#login_page'
     })
+
+    $("<div>", {
+        'id': 'logo',
+        appendTo:'#loginContainer'
+    }).css({'background-image': 'url(img/logo.png)', 'height': '150px', 'background-size': 'contain'})
     
     $("<input>", {
         'id': 'username',
+        placeholder: 'Username',
         type:'text',
         appendTo:'#loginContainer'
     })
     
     $("<input>", {
         'id': 'password',
+        placeholder: 'Password',
         type:'text',
         appendTo:'#loginContainer'
     })
 
     $("<input>", {
         'id': 'repeatPassword',
+        placeholder: 'Repeat password',
         type:'text',
         appendTo:'#loginContainer'
     })
     
     $("<input>", {
         value: 'Register',
+        class: 'button',
         'id': 'submit',
         type:'button',
         appendTo:'#loginContainer',
