@@ -27,6 +27,7 @@ body > div {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--main-red-color);
 }
 
 #loginContainer{
@@ -37,7 +38,16 @@ body > div {
 }
 
 #loginContainer > div, #loginContainer > input{
-    margin-bottom: 2px;
+    margin-bottom: 4px;
+}
+
+#loginContainer > input[type=text], #loginContainer > input[type=password] {
+    background-color: var(--main-red-color);
+    font-size: 20px;
+    padding: 5px;
+    border: 0px;
+    border-bottom: 2px solid var(--main-white-color);
+
 }
 
 .button {
@@ -46,6 +56,7 @@ body > div {
     font-size: 20px;
     padding: 5px;
     border: 0px;
+    border-radius: 10px;
 }
 
 .button:hover {

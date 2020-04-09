@@ -43,18 +43,25 @@ function registerPage() {
         type:'text',
         appendTo:'#loginContainer'
     })
+
+    $("<input>", {
+        'id': 'email',
+        placeholder: 'E-mail',
+        type:'text',
+        appendTo:'#loginContainer'
+    })
     
     $("<input>", {
         'id': 'password',
         placeholder: 'Password',
-        type:'text',
+        type:'password',
         appendTo:'#loginContainer'
     })
 
     $("<input>", {
         'id': 'repeatPassword',
         placeholder: 'Repeat password',
-        type:'text',
+        type:'password',
         appendTo:'#loginContainer'
     })
     

@@ -33,6 +33,12 @@ function login() {
     })
 }
 
+function resetPW() {
+    let email = prompt('Enter e-mail to reset password')
+    console.log('Reset code has been sent to: ' + email)
+    //Reset functionality...
+}
+
 
 /* Elements */
 function loginPage() {
@@ -46,7 +52,8 @@ function loginPage() {
     $("<div>", {
         'id': 'logo',
         appendTo:'#loginContainer'
-    }).css({'background-image': 'url(img/logo.png)', 'height': '150px', 'background-size': 'contain'})
+    }).css({'background-image': 'url(img/logo.png)', 'height': '150px',
+             'background-size': 'contain', 'background-repeat': 'no-repeat', 'margin-bottom': '50px'})
     
     $("<input>", {
         'id': 'username',
@@ -77,4 +84,12 @@ function loginPage() {
         type:'button',
         appendTo:'#loginContainer',
     }).click(registerPage)
+
+    $("<input>", {
+        value: 'Forgot password',
+        class: 'button',
+        'id': 'resetPW',
+        type:'button',
+        appendTo:'#loginContainer',
+    }).click(resetPW)
 }
