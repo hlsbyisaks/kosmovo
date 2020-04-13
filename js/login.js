@@ -1,3 +1,5 @@
+let userInloged;
+
 loginPage()
 
 function login() {
@@ -15,11 +17,12 @@ function login() {
             .done((data) => {
                 data = JSON.parse(data)
                 console.log(data)
+                userInloged = data
 
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-
+                    map()
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
