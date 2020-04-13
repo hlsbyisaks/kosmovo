@@ -33,9 +33,20 @@ function registerPage() {
     })
 
     $("<div>", {
+        html: 'KOSMOVO',
+        appendTo:'#loginContainer'
+    }).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '40px', 'text-align': 'center'})
+
+    $("<div>", {
+        html: '2020',
+        appendTo:'#loginContainer'
+    }).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '78px', 'margin-top': '-30px', 'text-align': 'center'})
+
+    $("<div>", {
         'id': 'logo',
         appendTo:'#loginContainer'
-    }).css({'background-image': 'url(img/logo.png)', 'height': '150px', 'background-size': 'contain'})
+    }).css({'background-image': 'url(img/logo.png)', 'height': '227px', 
+             'background-size': 'cover', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
     
     $("<input>", {
         'id': 'username',

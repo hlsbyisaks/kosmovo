@@ -8,6 +8,21 @@
     
 }
 
+::placeholder { /* Firefox, Chrome, Opera */ 
+    color: var(--main-blue-color); 
+} 
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color: var(--main-blue-color);
+} 
+  
+::-ms-input-placeholder { /* Microsoft Edge */ 
+    color: var(--main-blue-color);
+} 
+
+@font-face { font-family: Allerta-Regular; src: url('fonts/Allerta-Regular.ttf'); } 
+@font-face { font-family: Molot; src: url('fonts/Molot.otf');}
+
 body{
     margin: 0px;
 }
@@ -37,16 +52,26 @@ body > div {
     padding: 50px;
 }
 
-#loginContainer > div, #loginContainer > input{
+#loginContainer > div,
+#loginContainer > input{
     margin-bottom: 4px;
 }
 
-#loginContainer > input[type=text], #loginContainer > input[type=password] {
+#username,
+input[type=text]:focus,
+input[type=text]:valid {
+  border-color: var(--main-blue-color);
+}
+
+#loginContainer > input[type=text],
+#loginContainer > input[type=password] {
     background-color: var(--main-red-color);
     font-size: 20px;
     padding: 5px;
     border: 0px;
     border-bottom: 2px solid var(--main-white-color);
+    color: var(--main-yellow-color);
+    transition: border 0.6s ease;
 }
 
 .button {
@@ -54,12 +79,13 @@ body > div {
     color: var(--main-yellow-color);
     font-size: 20px;
     padding: 5px;
-    border: 0px;
-    border-radius: 10px;
+    border: 2px solid var(--main-blue-color);
+    border-radius: 10px;  
 }
 
 .button:hover {
     color: var(--main-lightblue-color);
+    box-shadow: 1px 1px black;
 }
 
 /* GAME PAGE */
