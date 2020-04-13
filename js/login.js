@@ -38,6 +38,12 @@ function login() {
 
 function resetPW() {
     let email = prompt('Enter e-mail to reset password')
+    $.get('php/sendpass.php', {
+        mail: email
+    })
+    .done((data) =>{
+        
+    })
     console.log('Reset code has been sent to: ' + email)
     //Reset functionality...
 }

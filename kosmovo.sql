@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 07, 2020 at 10:13 AM
+-- Generation Time: Apr 13, 2020 at 10:57 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.3.7
 
@@ -58,20 +58,22 @@ CREATE TABLE `user` (
   `userId` bigint(255) NOT NULL,
   `userName` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `mail` varchar(255) NOT NULL,
   `svgHat` varchar(255) NOT NULL,
   `colorHat` varchar(255) NOT NULL,
   `userScore` int(255) NOT NULL,
-  `lat` varchar(255) DEFAULT NULL,
-  `lng` varchar(255) DEFAULT NULL
+  `lat` float NOT NULL,
+  `lng` float NOT NULL,
+  `online` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`userId`, `userName`, `password`, `svgHat`, `colorHat`, `userScore`, `lat`, `lng`) VALUES
-(1, 'a', 'a', '', '', 0, '55.5915049', '13.00016'),
-(2, 'd', 'd', '', '', 0, '55.5941888', '12.9892352');
+INSERT INTO `user` (`userId`, `userName`, `password`, `mail`, `svgHat`, `colorHat`, `userScore`, `lat`, `lng`, `online`) VALUES
+(1, 'a', 'a', 'maxstromberg1996@gmail.com', '', '', 0, 55.5915, 13.0002, ''),
+(4, 'd', 'd', '', '', '', 0, 55.5915, 11.0002, '');
 
 -- --------------------------------------------------------
 
@@ -121,7 +123,7 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userId` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -15,8 +15,10 @@ function map() {
         // THIS IS LOCATION BASED
         //var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
-        var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
+       // var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
+        var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
+        // GET ALL QUESTION AND DISPLAY THEM
         $.get('php/questions.php', { activite: "getAllQuestion" })
             .done((data) => {
                 data = JSON.parse(data)
@@ -57,18 +59,21 @@ function map() {
                     checkIfQuestionHit()
                     break;
             }
-            getUsers()
         })
 
 
-        function getUsers() {
+        // FUNCTION THAT DISPLAY ENEMYS ON MAP
+        function getEnemys() {
+            // GET ALL USERS
             $.get('php/users.php')
                 .done((data) => {
                     data = JSON.parse(data)
                     console.log(data)
 
                     data.forEach(function (enemy) {
+                        // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
                         if (enemy.userId != userInloged[0].userId) {
+                            // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
                             if (!checkValue(enemy.userId, enemyList)) {
                                 let enemyName = enemy.userName
                                 console.log(enemy)
@@ -77,6 +82,7 @@ function map() {
                                 });
                                 enemyList.push({ print: enemy_object, id: enemy.userId })
                             }else{
+                                // IF enemyList conatin Change enemy change update cords. 
                                 enemyList.forEach((e) =>{
                                     if(e.id == enemy.userId){
                                         e.print.setLatLng([parseFloat(enemy.lat), parseFloat(enemy.lng)])
@@ -88,6 +94,8 @@ function map() {
                 })
         }
 
+
+        // FUNCTION THAT CHECK IF SOMETHING IS IN ARRAY
         function checkValue(value, arr) {
             var exist = false;
 
@@ -102,6 +110,8 @@ function map() {
             return exist;
         }
 
+
+        // If User is in radius of X question.
         function checkIfQuestionHit() {
             for (let i = 0; i < questions.length; i++) {
                 if (user.getLatLng().distanceTo(questions[i].radiusCord.getLatLng()) <= questions[i].radiusCord.getRadius()) {
@@ -122,7 +132,8 @@ function map() {
             })
         }
 
-        function UpdateCord(who) {
+        // Update Cords of inloged user and upload to DB.
+        function UpdateCord() {
                 $.get('php/updateCords.php', {
                     lat: userInloged[0].lat,
                     lng: userInloged[0].lng,
@@ -130,9 +141,16 @@ function map() {
                 })
                     .done(() => {
                         console.log("updated")
+                        // Print out new cords on map.
                         user.setLatLng([userInloged[0].lat, userInloged[0].lng])
                     })
         }
+
+
+        let update = setInterval(function(){
+            getEnemys()
+            UpdateCord()
+        },5000)
     })
 }
 

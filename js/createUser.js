@@ -1,5 +1,5 @@
 function createUser() {
-    if ($('#username').val() && $('#password').val() && $('#repeatPassword').val()) {
+    if ($('#username').val() && $('#password').val() && $('#repeatPassword').val() && $('#email').val()) {
         if ($('#password').val() == $('#repeatPassword').val()) {
             let username = $('#username').val()
             let password = $('#password').val()
@@ -12,10 +12,10 @@ function createUser() {
                 loginPage()
             })
         } else {
-            prompt('Passwords do not match')
+            alert('Passwords do not match')
         }
     } else {
-        prompt('Please fill all forms')
+        alert('Please fill all forms')
     }
 }
 

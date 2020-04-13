@@ -1,4 +1,0 @@
-
-
-
-// WHEN LOGIN SEND LAT AND IN TO DB
