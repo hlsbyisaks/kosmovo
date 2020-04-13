@@ -3,4 +3,5 @@ $(".logout_button").click(function(){
     loginPage()
     WhatPageAreUserOn("login")
     document.cookie = ""
+    clearInterval(updatingInterval)
 })

@@ -1,6 +1,8 @@
 let questions = []
 let enemyList = []
 
+let updatingInterval;
+
 function map() {
     navigator.geolocation.getCurrentPosition(function (location) {
         var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
@@ -147,7 +149,7 @@ function map() {
         }
 
 
-        let update = setInterval(function(){
+        updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
         },5000)
