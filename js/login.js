@@ -1,4 +1,25 @@
-loginPage()
+let userInloged;
+
+// LOGIN IF COOKIE SAVED
+
+if(document.cookie.length > 0){
+    let cookie = document.cookie.split(",")
+    $.get('php/login.php', {
+        username: cookie[0],
+        password: cookie[1]
+    })
+    .done((data) =>{
+        data = JSON.parse(data)
+        userInloged = data
+        WhatPageAreUserOn("game", data[0].userId, data[0].userName)
+        map()
+    })
+}else{
+    loginPage()
+    WhatPageAreUserOn("login")
+}
+
+
 
 function login() {
     navigator.geolocation.getCurrentPosition(function(location) {
@@ -15,11 +36,13 @@ function login() {
             .done((data) => {
                 data = JSON.parse(data)
                 console.log(data)
+                userInloged = data
+                setCookie(userInloged)
 
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-
+                    map()
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
@@ -35,6 +58,12 @@ function login() {
 
 function resetPW() {
     let email = prompt('Enter e-mail to reset password')
+    $.get('php/sendpass.php', {
+        mail: email
+    })
+    .done((data) =>{
+        
+    })
     console.log('Reset code has been sent to: ' + email)
     //Reset functionality...
 }
@@ -102,4 +131,5 @@ function loginPage() {
         type:'button',
         appendTo:'#loginContainer',
     }).click(resetPW)
+
 }

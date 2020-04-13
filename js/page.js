@@ -15,5 +15,3 @@ function WhatPageAreUserOn(thisPage, userID, user){
 }
 
 
-WhatPageAreUserOn("login")
-
