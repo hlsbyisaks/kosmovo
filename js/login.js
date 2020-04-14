@@ -26,10 +26,12 @@ function login() {
         if ($('#username').val() && $('#password').val()) {
             let username = $('#username').val()
             let password = $('#password').val()
+            let mail = $('#email').val()
 
             $.get('php/login.php', {
                 username: username,
                 password: password,
+                mail: mail,
                 lat: location.coords.latitude,
                 lng: location.coords.longitude
             })

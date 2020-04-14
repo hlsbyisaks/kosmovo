@@ -3,10 +3,12 @@ function createUser() {
         if ($('#password').val() == $('#repeatPassword').val()) {
             let username = $('#username').val()
             let password = $('#password').val()
+            let mail = $('#email').val()
 
             $.get('php/register.php', {
                 username: username,
-                password: password
+                password: password,
+                mail: mail
             })
             .done((data) => {
                 loginPage()
