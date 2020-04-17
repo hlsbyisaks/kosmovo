@@ -23,7 +23,6 @@ function createUser() {
 
 
 
-
 /* Elements */
 
 function registerPage() {
@@ -60,8 +59,9 @@ function registerPage() {
     $("<input>", {
         'id': 'email',
         placeholder: 'E-mail',
-        type:'text',
-        appendTo:'#loginContainer'
+        type:'email',
+        appendTo:'#loginContainer',
+        required: "required"
     })
     
     $("<input>", {
@@ -85,4 +85,11 @@ function registerPage() {
         type:'button',
         appendTo:'#loginContainer',
     }).click(createUser)
+
+    $("<input>", {
+        value: 'Back',
+        class: 'button',
+        type:'button',
+        appendTo:'#loginContainer',
+    }).click(loginPage)
 }

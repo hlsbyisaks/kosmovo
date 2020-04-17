@@ -32,6 +32,11 @@ body > div {
     height: 100vh;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
 
 
 /* LoginPage */
@@ -64,7 +69,8 @@ input[type=text]:valid {
 }
 
 #loginContainer > input[type=text],
-#loginContainer > input[type=password] {
+#loginContainer > input[type=password],
+#loginContainer > input[type=email] {
     background-color: var(--main-red-color);
     font-size: 20px;
     padding: 5px;
@@ -90,11 +96,26 @@ input[type=text]:valid {
 
 /* GAME PAGE */
 
+/* HEADER */
+
 .header{
-    width: 100vw;
+    width: calc(100vw-4px);
     height: 10vh;
     background-color: var(--main-red-color);
     color: var(--main-yellow-color);
+    border: 2px solid black;
+}
+
+.userInfo {
+    position: absolute;
+    margin: 10px;
+}
+
+.logoContainer {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px;
 }
 
 #map{

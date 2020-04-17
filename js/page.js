@@ -10,7 +10,7 @@ function WhatPageAreUserOn(thisPage, userID, user){
     $("#" + thisPage + "_page").show()
 
     if(thisPage == "game"){
-        $(".user_name").html(user)
+        $(".user_name").html('User: ' + user)
     }
 }
 

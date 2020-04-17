@@ -26,25 +26,24 @@ function login() {
         if ($('#username').val() && $('#password').val()) {
             let username = $('#username').val()
             let password = $('#password').val()
-            let mail = $('#email').val()
 
             $.get('php/login.php', {
                 username: username,
                 password: password,
-                mail: mail,
                 lat: location.coords.latitude,
                 lng: location.coords.longitude
             })
             .done((data) => {
                 data = JSON.parse(data)
                 console.log(data)
-                userInloged = data
-                setCookie(userInloged)
+                
 
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
                     map()
+                    userInloged = data
+                    setCookie(userInloged)
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
