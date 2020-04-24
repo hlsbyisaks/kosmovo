@@ -1,5 +1,6 @@
 let questions = []
 let enemyList = []
+let played
 
 let updatingInterval;
 
@@ -21,6 +22,7 @@ function map() {
         var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
+
         $.get('php/questions.php', { activite: "getAllQuestion" })
             .done((data) => {
                 data = JSON.parse(data)
@@ -29,7 +31,7 @@ function map() {
                 data.forEach(function (quest) {
                     console.log(quest)
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
-                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 10).addTo(mymap);
+                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 2000).addTo(mymap);
                     questions.push({ quest, questionCord: question, radiusCord: radius })
                 })
             })
@@ -41,22 +43,22 @@ function map() {
         $(document).keydown(function (e) {
             switch (e.which) {
                 case 37:    //left arrow key
-                    userInloged[0].lng -= 1 ;
+                    userInloged[0].lng -= 0,2 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 38:    //up arrow key
-                    userInloged[0].lat += 1 ;
+                    userInloged[0].lat += 0,2 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 39:    //right arrow key
-                    userInloged[0].lng += 1 ;
+                    userInloged[0].lng += 0,2 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 40:    //bottom arrow key
-                    userInloged[0].lat -= 1 ;
+                    userInloged[0].lat -= 0,2 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;

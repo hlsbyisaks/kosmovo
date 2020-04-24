@@ -103,7 +103,6 @@ input[type=text]:valid {
     height: 10vh;
     background-color: var(--main-red-color);
     color: var(--main-yellow-color);
-    border: 2px solid black;
 }
 
 .userInfo {
