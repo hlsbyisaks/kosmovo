@@ -1,4 +1,4 @@
-function setCookie(user){
+/*function setCookie(user){
     document.cookie = user[0].userName + "," + user[0].password;
 }
 
@@ -10,4 +10,4 @@ function CookieLogin(){
         let password = cookie[1]
         return account + password
     }
-}
+}*/

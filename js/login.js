@@ -1,7 +1,7 @@
 let userInloged;
 
 // LOGIN IF COOKIE SAVED
-
+/*
 if(document.cookie.length > 0){
     let cookie = document.cookie.split(",")
     $.get('php/login.php', {
@@ -17,8 +17,10 @@ if(document.cookie.length > 0){
 }else{
     loginPage()
     WhatPageAreUserOn("login")
-}
+}*/
 
+WhatPageAreUserOn("login")
+loginPage()
 
 
 function login() {

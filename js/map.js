@@ -23,11 +23,11 @@ function map() {
         var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
-        $.get('php/questions.php', { activite: "getAllQuestion" })
+        $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
             .done((data) => {
                 data = JSON.parse(data)
 
-
+                console.log(data)
                 data.forEach(function (quest) {
                     console.log(quest)
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
@@ -140,7 +140,13 @@ function map() {
         }
 
         function createQuestion(q) {
-            $(".startQuestion").unbind("click").click(function () {             
+            $(".startQuestion").unbind("click").click(function () {
+                
+                $.get('php/questions.php', { activite: "isPlaying", questionID: parseInt(q.qId)})
+                    .done((data) =>{
+
+                    })
+
                 $(".startQuestion").css({display: "none"})
                 $(".questionWrapper").css({display: "flex"})
 
@@ -151,6 +157,8 @@ function map() {
                 questionAlt = shuffle(questionAlt)
                 console.log(questionAlt)
 
+                // CLEAR BOX
+                $(".questionAnswer").html("")
                 for(let i = 0; i < 4; i++){
                     console.log(questionAlt[i])
                     $("<div>",{
@@ -159,10 +167,10 @@ function map() {
                     }).click(function(){
                         if(this.innerHTML == q.alt1){
                             console.log("YES")
-                            QuestionFinish("RightAnswer", q.score)
+                            QuestionFinish("RightAnswer", q)
                         }else{
                             console.log("NO")
-                            QuestionFinish("WrongAnswer")
+                            QuestionFinish("WrongAnswer", q)
                         }
                     })
                     
@@ -194,24 +202,40 @@ function map() {
                     $(".TimeLeft").css({width: fullBar + "%"})
                 }else{
                     clearInterval(timer)
-                    QuestionFinish("noTime")
+                    QuestionFinish("noTime", q)
                 }
             },1000*sec/100)
 
         }
 
-        function QuestionFinish(whatHappend, score){
+        function QuestionFinish(whatHappend, q){
             $(".questionWrapper").css({display: "none"})
             clearInterval(timer)
-
+            console.log(q)
             if(whatHappend == "noTime"){
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 0})
+                .done((data) =>{
+
+                })
                 console.log("NO TIME")
             }else if(whatHappend == "RightAnswer"){
-                console.log("Right Answer")
-                console.log("You earned " + score)
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 1})
+                .done((data) =>{
+
+                })
             }else if(whatHappend == "WrongAnswer"){
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 0})
+                .done((data) =>{
+
+                })
                 console.log("Wrong Answer")
             }
+
+
+            $.get('php/questions.php', { activite: "isNotPlaying", questionID: parseInt(q.qId)})
+                .done((data) =>{
+
+            })
         }
 
         // Update Cords of inloged user and upload to DB.
