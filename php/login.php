@@ -1,6 +1,8 @@
 <?php
 include('connectToDB.php');
 $pdo = connectDB();
+
+
 /*
     $query = 'UPDATE user SET lat = ?, lng = ? WHERE userName = ? AND password = ?';
     $sql = $pdo->prepare($query);
@@ -21,5 +23,7 @@ $pdo = connectDB();
 
     $status = json_encode($status);
     echo $status;
+
+   
 
 ?>

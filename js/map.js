@@ -4,6 +4,8 @@ let played
 
 let updatingInterval;
 
+let timer;
+
 function map() {
     navigator.geolocation.getCurrentPosition(function (location) {
         var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
@@ -23,7 +25,7 @@ function map() {
 
         // GET ALL QUESTION AND DISPLAY THEM
 
-        $.get('php/questions.php', { activite: "getAllQuestion" })
+        $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId })
             .done((data) => {
                 data = JSON.parse(data)
 
@@ -43,22 +45,22 @@ function map() {
         $(document).keydown(function (e) {
             switch (e.which) {
                 case 37:    //left arrow key
-                    userInloged[0].lng -= 0,2 ;
+                    userInloged[0].lng -= 0.001 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 38:    //up arrow key
-                    userInloged[0].lat += 0,2 ;
+                    userInloged[0].lat += 0.001 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 39:    //right arrow key
-                    userInloged[0].lng += 0,2 ;
+                    userInloged[0].lng += 0.001 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
                 case 40:    //bottom arrow key
-                    userInloged[0].lat -= 0,2 ;
+                    userInloged[0].lat -= 0.001 ;
                     UpdateCord("user")
                     checkIfQuestionHit()
                     break;
@@ -117,12 +119,22 @@ function map() {
 
         // If User is in radius of X question.
         function checkIfQuestionHit() {
+
+            //MAKE PLAY TO YES IN DB
             for (let i = 0; i < questions.length; i++) {
                 if (user.getLatLng().distanceTo(questions[i].radiusCord.getLatLng()) <= questions[i].radiusCord.getRadius()) {
-                    console.log(questions[i].quest.qString);
-                    $(".startQuestion").css({ display: "flex" })
-                    createQuestion(questions[i])
-                    break;
+
+                    console.log(questions[i].quest.qId)
+                    $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(questions[i].quest.qId)})
+                    .done((data) => {
+                        console.log(data)
+                        if(data == "OK"){
+                            $(".startQuestion").css({ display: "flex" }).html("You Found a Question, Tap to Start")
+                            createQuestion(questions[i].quest)
+                        }else{
+                            $(".startQuestion").css({ display: "flex" }).html("Someone is Playing Right Now!")
+                        }
+                    })
                 } else {
                     $(".startQuestion").css({ display: "none" })
                 }
@@ -130,10 +142,78 @@ function map() {
         }
 
         function createQuestion(q) {
+            $(".startQuestion").unbind("click").click(function () {             
+                $(".startQuestion").css({display: "none"})
+                $(".questionWrapper").css({display: "flex"})
 
-            $(".startQuestion").unbind("click").click(function () {
-                console.log(q.quest.alt1)
+                $(".questionText").html(q.qString)
+
+                let questionAlt = []
+                questionAlt.push(q.alt1, q.alt2, q.alt3, q.alt4)
+                questionAlt = shuffle(questionAlt)
+                console.log(questionAlt)
+
+                for(let i = 0; i < 4; i++){
+                    console.log(questionAlt[i])
+                    $("<div>",{
+                        "html": questionAlt[i],
+                        appendTo: ".questionAnswer"
+                    }).click(function(){
+                        if(this.innerHTML == q.alt1){
+                            console.log("YES")
+                            QuestionFinish("RightAnswer", q.score)
+                        }else{
+                            console.log("NO")
+                            QuestionFinish("WrongAnswer")
+                        }
+                    })
+                    
+                }
+
+                startQuestionTimer()  
             })
+        }
+
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        function startQuestionTimer(){
+            let sec = 60;
+
+            let fullBar = 100;
+
+            timer = setInterval(function(){
+                if(fullBar >= 0){
+                    fullBar -= 1
+                    $(".TimeLeft").css({width: fullBar + "%"})
+                }else{
+                    clearInterval(timer)
+                    QuestionFinish("noTime")
+                }
+            },1000*sec/100)
+
+        }
+
+        function QuestionFinish(whatHappend, score){
+            $(".questionWrapper").css({display: "none"})
+            clearInterval(timer)
+
+            if(whatHappend == "noTime"){
+                console.log("NO TIME")
+            }else if(whatHappend == "RightAnswer"){
+                console.log("Right Answer")
+                console.log("You earned " + score)
+            }else if(whatHappend == "WrongAnswer"){
+                console.log("Wrong Answer")
+            }
         }
 
         // Update Cords of inloged user and upload to DB.

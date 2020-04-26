@@ -1,4 +1,5 @@
 let userInloged;
+let encPassword
 
 // LOGIN IF COOKIE SAVED
 
@@ -26,6 +27,8 @@ function login() {
         if ($('#username').val() && $('#password').val()) {
             let username = $('#username').val()
             let password = $('#password').val()
+
+
 
             $.get('php/login.php', {
                 username: username,
