@@ -9,7 +9,7 @@ if($_GET["activite"] == "getAllQuestion"){
         WHERE NOT EXISTS
         (SELECT * 
             FROM userplayed
-            WHERE question.qId = userplayed.qId AND userplayed.correct = 1 AND userplayed.userId = ?);';
+            WHERE userplayed.correct = 1 AND userplayed.userId = ?);';
     $sql->bindParam(1, $_GET['userId']);
     $sql = $pdo->prepare($query);
     $sql->execute();

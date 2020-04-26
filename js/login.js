@@ -30,13 +30,14 @@ function login() {
 
 
 
-            $.get('php/login.php', {
+            $.get('php/pwcheck.php', {
                 username: username,
                 password: password,
                 lat: location.coords.latitude,
                 lng: location.coords.longitude
             })
             .done((data) => {
+                console.log(data)
                 data = JSON.parse(data)
                 console.log(data)
                 

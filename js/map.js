@@ -28,6 +28,7 @@ function map() {
         $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId })
             .done((data) => {
                 data = JSON.parse(data)
+                console.log(data)
 
 
                 data.forEach(function (quest) {
@@ -231,10 +232,10 @@ function map() {
         }
 
 
-        updatingInterval = setInterval(function(){
+        /* updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
-        },5000)
+        },5000) */
     })
 }
 

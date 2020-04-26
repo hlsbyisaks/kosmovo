@@ -1,7 +1,9 @@
 <?php
 include('connectToDB.php');
-/*$hashedPwdInDb = password_hash($_GET['password'], PASSWORD_DEFAULT); 
-password_verify ('test', $hashedPwdInDb);*/
+
+// Creates hashed string of user password
+$hashedPwdInDb = password_hash($_GET['password'], PASSWORD_DEFAULT); 
+
 
 $pdo = connectDB();
 $query = 'INSERT INTO user (userName, password, mail, svgHat, colorHat, userScore, lat, lng, online) 
