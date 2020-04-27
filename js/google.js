@@ -106,7 +106,7 @@
                         // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
                         if (enemy.userId != userInloged[0].userId) {
                             // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
-                            if (!checkValue(enemy.userId, enemyList.id)) {
+                            if (!checkValue(enemy.userId, enemyList)) {
                                 var enemyPos = {
                                   lat: parseFloat(enemy.lat),
                                   lng: parseFloat(enemy.long),

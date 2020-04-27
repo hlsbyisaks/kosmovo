@@ -44,7 +44,7 @@ function map() {
                         // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
                         if (enemy.userId != userInloged[0].userId) {
                             // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
-                            if (!checkValue(enemy.userId, enemyList)) {
+                            if (!checkValue(enemyList, enemy)) {
                                 let enemyName = enemy.userName
                                 console.log(enemy)
                                 var enemy_object = L.marker(new L.LatLng(parseFloat(enemy.lat), parseFloat(enemy.lng))).addTo(mymap).on('click', function () {
