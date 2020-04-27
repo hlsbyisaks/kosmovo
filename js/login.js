@@ -1,4 +1,5 @@
 let userInloged;
+let encPassword
 
 // LOGIN IF COOKIE SAVED
 /*
@@ -29,13 +30,14 @@ function login() {
             let username = $('#username').val()
             let password = $('#password').val()
 
-            $.get('php/login.php', {
+
+
+            $.get('php/pwcheck.php', {
                 username: username,
-                password: password,
-                lat: location.coords.latitude,
-                lng: location.coords.longitude
+                password: password
             })
             .done((data) => {
+                console.log(data)
                 data = JSON.parse(data)
                 console.log(data)
                 

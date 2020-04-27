@@ -1,5 +1,7 @@
 let questions = []
 let enemyList = []
+let played
+let latlng;
 
 let updatingInterval;
 
@@ -7,7 +9,7 @@ let timer;
 
 function map() {
     navigator.geolocation.getCurrentPosition(function (location) {
-        var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+        latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
         var mymap = L.map('map').setView(latlng, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -16,16 +18,14 @@ function map() {
             id: 'mapbox.streets',
             accessToken: 'pk.eyJ1IjoiYmJyb29rMTU0IiwiYSI6ImNpcXN3dnJrdDAwMGNmd250bjhvZXpnbWsifQ.Nf9Zkfchos577IanoKMoYQ'
         }).addTo(mymap);
-        // THIS IS LOCATION BASED
-        //var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
-       // var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
         var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
         $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
             .done((data) => {
                 data = JSON.parse(data)
+                console.log(data)
 
                 console.log(data)
                 data.forEach(function (quest) {
@@ -35,35 +35,6 @@ function map() {
                     questions.push({ quest, questionCord: question, radiusCord: radius })
                 })
             })
-
-
-
-        //SIMUALTION OF WALKING    
-
-        $(document).keydown(function (e) {
-            switch (e.which) {
-                case 37:    //left arrow key
-                    userInloged[0].lng -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 38:    //up arrow key
-                    userInloged[0].lat += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 39:    //right arrow key
-                    userInloged[0].lng += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 40:    //bottom arrow key
-                    userInloged[0].lat -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-            }
-        })
 
 
         // FUNCTION THAT DISPLAY ENEMYS ON MAP
@@ -241,14 +212,14 @@ function map() {
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
                 $.get('php/updateCords.php', {
-                    lat: userInloged[0].lat,
-                    lng: userInloged[0].lng,
+                    lat: location.coords.latitudet,
+                    lng: location.coords.longitude,
                     userId: userInloged[0].userId
                 })
                     .done(() => {
                         console.log("updated")
                         // Print out new cords on map.
-                        user.setLatLng([userInloged[0].lat, userInloged[0].lng])
+                        user.setLatLng([latlng.location.coords.latitude, latlng.location.coords.longitude])
                     })
         }
 
@@ -256,7 +227,8 @@ function map() {
         updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
-        },5000)
+            latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+        },5000) 
     })
 }
 
