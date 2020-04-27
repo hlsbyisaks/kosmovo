@@ -222,14 +222,14 @@ function map() {
         function UpdateCord() {
             console.log(userInloged[0].lat)
                 $.get('php/updateCords.php', {
-                    lat: userInloged[0].lat,
-                    lng: userInloged[0].lng,
+                    lat: latlng.location.coords.latitude,
+                    lng: latlng.location.coords.longitude,
                     userId: userInloged[0].userId
                 })
                     .done(() => {
                         console.log("updated")
                         // Print out new cords on map.
-                        user.setLatLng([userInloged[0].lat, userInloged[0].lng])
+                        user.setLatLng([latlng.location.coords.latitude, latlng.location.coords.longitude])
                     })
         }
 
