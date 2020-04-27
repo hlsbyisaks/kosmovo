@@ -1,15 +1,13 @@
 let questions = []
 let enemyList = []
-let played
-let latlng;
-
+let played;
 let updatingInterval;
 
 let timer;
 
 function map() {
     navigator.geolocation.getCurrentPosition(function (location) {
-        latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+        let latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
         var mymap = L.map('map').setView(latlng, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,17 +17,14 @@ function map() {
             accessToken: 'pk.eyJ1IjoiYmJyb29rMTU0IiwiYSI6ImNpcXN3dnJrdDAwMGNmd250bjhvZXpnbWsifQ.Nf9Zkfchos577IanoKMoYQ'
         }).addTo(mymap);
 
-        var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
+        let user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
         $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
             .done((data) => {
                 data = JSON.parse(data)
-                console.log(data)
 
-                console.log(data)
                 data.forEach(function (quest) {
-                    console.log(quest)
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
                     let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 2000).addTo(mymap);
                     questions.push({ quest, questionCord: question, radiusCord: radius })
@@ -212,14 +207,13 @@ function map() {
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
                 $.get('php/updateCords.php', {
-                    lat: location.coords.latitudet,
-                    lng: location.coords.longitude,
+                    lat: location.coords.lat,
+                    lng: location.coords.lng,
                     userId: userInloged[0].userId
                 })
                     .done(() => {
                         console.log("updated")
                         // Print out new cords on map.
-                        user.setLatLng([latlng.location.coords.latitude, latlng.location.coords.longitude])
                     })
         }
 
@@ -227,10 +221,15 @@ function map() {
         updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
-            latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
         },5000) 
     })
+    
 }
+
+
+
+
+
 
 
 
