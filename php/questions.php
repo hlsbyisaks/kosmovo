@@ -5,13 +5,13 @@ $pdo = connectDB();
 
 if($_GET["activite"] == "getAllQuestion"){
     $query = 'SELECT *
-        FROM question
-        WHERE NOT EXISTS
-        (SELECT * 
-            FROM userplayed
-            WHERE userplayed.correct = 1 AND userplayed.userId = ?);';
-    $sql->bindParam(1, $_GET['userId']);
+    FROM question
+    WHERE NOT EXISTS
+    (SELECT * 
+        FROM userplayed
+        WHERE userplayed.correct = 1 OR userplayed.userId = ?)';
     $sql = $pdo->prepare($query);
+    $sql->bindParam(1, $_GET['userId']);
     $sql->execute();
 
     $questions = $sql->fetchAll(\PDO::FETCH_ASSOC);
@@ -31,5 +31,16 @@ if($_GET["activite"] == "getAllQuestion"){
     }else{
         echo "OK";
     }
+}else if($_GET["activite"] == "isPlaying"){
+    $query = 'UPDATE question SET play = "yes" where question.qId = ?';
+    $sql = $pdo->prepare($query);
+    $sql->bindParam(1, $_GET['questionID']);
+    $sql->execute();
+
+}else if($_GET["activite"] == "isNotPlaying"){
+    $query = 'UPDATE question SET play = "no" where question.qId = ?';
+    $sql = $pdo->prepare($query);
+    $sql->bindParam(1, $_GET['questionID']);
+    $sql->execute();
 }
 ?>

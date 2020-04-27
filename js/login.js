@@ -33,11 +33,8 @@ function login() {
             $.get('php/pwcheck.php', {
                 username: username,
                 password: password,
-                lat: location.coords.latitude,
-                lng: location.coords.longitude
             })
             .done((data) => {
-                console.log(data)
                 data = JSON.parse(data)
                 console.log(data)
                 
@@ -50,6 +47,7 @@ function login() {
                     setCookie(userInloged)
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
+                    console.log(userInloged)
 
                 } else {
                     prompt('Username and password does not match')

@@ -1,14 +1,15 @@
 let questions = []
 let enemyList = []
 let played
-
+let latlng 
 let updatingInterval;
 
 let timer;
 
 function map() {
     navigator.geolocation.getCurrentPosition(function (location) {
-        var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+        latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+        
 
         var mymap = L.map('map').setView(latlng, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -43,7 +44,7 @@ function map() {
 
         //SIMUALTION OF WALKING    
 
-        $(document).keydown(function (e) {
+/*         $(document).keydown(function (e) {
             switch (e.which) {
                 case 37:    //left arrow key
                     userInloged[0].lng -= 0.001 ;
@@ -66,7 +67,7 @@ function map() {
                     checkIfQuestionHit()
                     break;
             }
-        })
+        }) */
 
 
         // FUNCTION THAT DISPLAY ENEMYS ON MAP
@@ -219,6 +220,7 @@ function map() {
 
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
+            console.log(userInloged[0].lat)
                 $.get('php/updateCords.php', {
                     lat: userInloged[0].lat,
                     lng: userInloged[0].lng,
@@ -232,10 +234,12 @@ function map() {
         }
 
 
-        /* updatingInterval = setInterval(function(){
+        updatingInterval = setInterval(function(){
+            latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
             getEnemys()
             UpdateCord()
-        },5000) */
+            $('.user_name').html(location.coords.latitude + ' ' + location.coords.longitude)
+        },5000)
     })
 }
 
