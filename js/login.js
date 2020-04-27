@@ -45,8 +45,8 @@ function login() {
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-                    initMap()
                     userInloged = data
+                    initMap()
                     setCookie(userInloged)
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
