@@ -1,14 +1,13 @@
 let questions = []
 let enemyList = []
 let played
-let latlng 
 let updatingInterval;
 
 let timer;
 
 function map() {
-    navigator.geolocation.getCurrentPosition(function (location) {
-        latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+    navigator.geolocation.watchPosition(function (location) {
+        let latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
         
 
         var mymap = L.map('map').setView(latlng, 13)
@@ -22,7 +21,7 @@ function map() {
         //var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
        // var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
-        var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
+        let user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
 
@@ -35,7 +34,7 @@ function map() {
                 data.forEach(function (quest) {
                     console.log(quest)
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
-                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 2000).addTo(mymap);
+                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 10).addTo(mymap);
                     questions.push({ quest, questionCord: question, radiusCord: radius })
                 })
             })
@@ -220,26 +219,26 @@ function map() {
 
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
-            console.log(userInloged[0].lat)
-                $.get('php/updateCords.php', {
-                    lat: latlng.location.coords.latitude,
-                    lng: latlng.location.coords.longitude,
-                    userId: userInloged[0].userId
-                })
-                    .done(() => {
-                        console.log("updated")
-                        // Print out new cords on map.
-                        user.setLatLng([latlng.location.coords.latitude, latlng.location.coords.longitude])
+            $.get('php/updateCords.php', {
+                lat: location.coords.lat,
+                lng: location.coords.lng,
+                userId: userInloged[0].userId
+            })
+                .done(() => {
+                    console.log("updated")
+                    // Print out new cords on map.
+                    navigator.geolocation.watchPosition(function (location) {
+                        user.setLatLng([location.coords.latitude, location.coords.longitude])
+                        $('.user_name').html(location.coords.latitude + ' ' + location.coords.longitude)
                     })
-        }
+                })
+    }
 
 
         updatingInterval = setInterval(function(){
-            latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
             getEnemys()
             UpdateCord()
-            $('.user_name').html(location.coords.latitude + ' ' + location.coords.longitude)
-        },5000)
+        },2000)
     })
 }
 
