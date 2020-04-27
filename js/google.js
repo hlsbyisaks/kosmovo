@@ -2,14 +2,10 @@
       // prompted by your browser. If you see the error "The Geolocation service
       // failed.", it means you probably did not give permission for the browser to
       // locate you.
-<<<<<<< HEAD
       var map, infoWindow, userMarker;
       let qAr = [];
 
       let timer;
-=======
-      var map, infoWindow;
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
       function initMap() {
 
         //CREATING MAP
@@ -21,14 +17,10 @@
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
-<<<<<<< HEAD
 
           // PLACE ONE TIME
           navigator.geolocation.getCurrentPosition(function(position) {
 
-=======
-          navigator.geolocation.watchPosition(function(position) {
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
@@ -37,16 +29,11 @@
             infoWindow.setPosition(pos);
             map.setCenter(pos);
 
-<<<<<<< HEAD
             userMarker= new google.maps.Marker({
-=======
-            var userMarker = new google.maps.Marker({
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
               position: pos,
               map: map,
               title: "USER"
             })
-<<<<<<< HEAD
         
 
           }, function() {
@@ -106,16 +93,11 @@
                 $(".startQuestion").css({ display: "none" })
               }
             })      
-=======
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
-<<<<<<< HEAD
           
-=======
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
@@ -128,7 +110,6 @@
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
-<<<<<<< HEAD
       }
 
 
@@ -240,6 +221,3 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
 
   })
 }
-=======
-      }
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855

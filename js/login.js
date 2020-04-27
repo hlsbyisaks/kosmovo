@@ -34,11 +34,7 @@ function login() {
 
             $.get('php/pwcheck.php', {
                 username: username,
-<<<<<<< HEAD
                 password: password
-=======
-                password: password,
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
             })
             .done((data) => {
                 data = JSON.parse(data)
@@ -48,10 +44,6 @@ function login() {
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-<<<<<<< HEAD
-=======
-                    initMap()
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
                     userInloged = data
                     initMap()
                     setCookie(userInloged)

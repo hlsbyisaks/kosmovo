@@ -1,23 +1,13 @@
 let questions = []
 let enemyList = []
-<<<<<<< HEAD
 let played;
-=======
-let played
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
 let updatingInterval;
 
 let timer;
 
 function map() {
-<<<<<<< HEAD
     navigator.geolocation.getCurrentPosition(function (location) {
         let latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-=======
-    navigator.geolocation.watchPosition(function (location) {
-        let latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-        
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
 
         var mymap = L.map('map').setView(latlng, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -27,10 +17,6 @@ function map() {
             accessToken: 'pk.eyJ1IjoiYmJyb29rMTU0IiwiYSI6ImNpcXN3dnJrdDAwMGNmd250bjhvZXpnbWsifQ.Nf9Zkfchos577IanoKMoYQ'
         }).addTo(mymap);
 
-<<<<<<< HEAD
-=======
-       // var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
         let user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
@@ -40,44 +26,12 @@ function map() {
 
                 data.forEach(function (quest) {
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
-                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 10).addTo(mymap);
+                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 2000).addTo(mymap);
                     questions.push({ quest, questionCord: question, radiusCord: radius })
                 })
             })
 
 
-<<<<<<< HEAD
-=======
-
-        //SIMUALTION OF WALKING    
-
-/*         $(document).keydown(function (e) {
-            switch (e.which) {
-                case 37:    //left arrow key
-                    userInloged[0].lng -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 38:    //up arrow key
-                    userInloged[0].lat += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 39:    //right arrow key
-                    userInloged[0].lng += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 40:    //bottom arrow key
-                    userInloged[0].lat -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-            }
-        }) */
-
-
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
         // FUNCTION THAT DISPLAY ENEMYS ON MAP
         function getEnemys() {
             // GET ALL USERS
@@ -248,11 +202,12 @@ function map() {
                 .done((data) =>{
 
             })
+
+            
         }
 
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
-<<<<<<< HEAD
                 $.get('php/updateCords.php', {
                     lat: location.coords.lat,
                     lng: location.coords.lng,
@@ -261,32 +216,14 @@ function map() {
                     .done(() => {
                         console.log("updated")
                         // Print out new cords on map.
-=======
-            $.get('php/updateCords.php', {
-                lat: location.coords.lat,
-                lng: location.coords.lng,
-                userId: userInloged[0].userId
-            })
-                .done(() => {
-                    console.log("updated")
-                    // Print out new cords on map.
-                    navigator.geolocation.watchPosition(function (location) {
-                        user.setLatLng([location.coords.latitude, location.coords.longitude])
-                        $('.user_name').html(location.coords.latitude + ' ' + location.coords.longitude)
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
                     })
-                })
-    }
+        }
 
 
         updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
-<<<<<<< HEAD
         },5000) 
-=======
-        },2000)
->>>>>>> 22bbd4a71351376819547857f79ecc16d4fbd855
     })
     
 }
