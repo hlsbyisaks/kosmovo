@@ -2,8 +2,12 @@
       // prompted by your browser. If you see the error "The Geolocation service
       // failed.", it means you probably did not give permission for the browser to
       // locate you.
+
+
+      // WHAT TO DO: TIMEOUT FOR WATCHPOSITION
       var map, infoWindow, userMarker;
       let qAr = [];
+      let enemyList = []
 
       let timer;
       function initMap() {
@@ -92,7 +96,34 @@
               }else{
                 $(".startQuestion").css({ display: "none" })
               }
-            })      
+            })
+
+
+            $.get('php/users.php')
+                .done((data) => {
+                    data = JSON.parse(data)
+                    data.forEach(function (enemy) {
+                        // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
+                        if (enemy.userId != userInloged[0].userId) {
+                            // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
+                            if (!checkValue(enemy.userId, enemyList.id)) {
+                                var enemyPos = {
+                                  lat: parseFloat(enemy.lat),
+                                  lng: parseFloat(enemy.long),
+                                  map:map
+                                }
+                                enemyList.push({ enemyPos: enemyPos, id: enemy.userId })
+                            }else{
+                                // IF enemyList conatin Change enemy change update cords. 
+                                enemyList.forEach((e) =>{
+                                    if(e.id == enemy.userId){
+                                        e.enemyPos.setPosition(enemyPos)
+                                    }
+                                })
+                            }
+                        }
+                    })
+                })
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -116,10 +147,21 @@
 
 
 
+function checkValue(value, arr) {
+    var exist = false;
 
+    for (var i = 0; i < arr.length; i++) {
+    var name = arr[i].id;
+    if (name == value) {
+    exist = true;
+              break;
+          }
+      }
 
+      return exist;
+}
 
-      function createQuestion(qInfo) {
+function createQuestion(qInfo) {
         $(".startQuestion").unbind("click").click(function () {
             
             $.get('php/questions.php', { activite: "isPlaying", questionID: parseInt(qInfo.quest.qId)})
@@ -158,10 +200,9 @@
 
             startQuestionTimer()  
         })
-    }
+}
 
-
-    function shuffle(a) {
+function shuffle(a) {
       var j, x, i;
       for (i = a.length - 1; i > 0; i--) {
           j = Math.floor(Math.random() * (i + 1));
@@ -170,9 +211,9 @@
           a[j] = x;
       }
       return a;
-  }
+}
 
-  function startQuestionTimer(){
+function startQuestionTimer(){
     let sec = 60;
 
     let fullBar = 100;
