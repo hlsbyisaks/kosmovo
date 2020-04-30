@@ -30,38 +30,30 @@
               lng: position.coords.longitude
             };
 
-            infoWindow.setPosition(pos);
             map.setCenter(pos);
+
+            var icon = {
+              url: 'img/profileface.svg', // url
+              scaledSize: new google.maps.Size(50, 50), // scaled size
+          };
 
             userMarker= new google.maps.Marker({
               position: pos,
+              icon: icon,
               map: map,
               title: "USER"
             })
-        
 
-            
+            var infoWindow = new google.maps.InfoWindow({
+              content: userInloged[0].userName + " score" + userInloged[0].userScore
+            })
 
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-
-
-          //UPDATE
-          navigator.geolocation.watchPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-
-            userMarker.setPosition(pos)
+            userMarker.addListener('click', function() {
+              infoWindow.open(map, userMarker);
+            });
 
 
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-
-           //PLACE OUT QUESTIONS
+            //PLACE OUT QUESTIONS
            $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
            .done((data) => {
                data = JSON.parse(data)
@@ -83,11 +75,41 @@
                  
                  qAr.push({radius: circle, quest: quest, marker: qMark})
                })
+
+               //FIX SO ITS IN THE DONE FUCTION ON ROW61-76 JUST FOR BEING COOLER CODE!
+               qAr.forEach(function(qInfo){
+                if(qInfo.radius.getBounds().contains(userMarker.position)){
+
+                  $(".startQuestion").css({ display: "flex" }).html("You Found a Question, Tap to Start")
+            
+                  $(".startQuestion").click(function(){
+                  $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qInfo.quest.qId)})
+                  .done((data) => {
+                      console.log(data)
+                      if(data == "OK"){
+                          createQuestion(qInfo)
+                          console.log(qInfo)
+                      }else{
+                          $(".startQuestion").css({ display: "flex" }).html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
+                      }
+                  })
+                })
+                }else{
+                  $(".startQuestion").css({ display: "none" })
+                }
+                
+              })
+              
          })
+            
+
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
 
 
           //UPDATE
-          navigator.geolocation.watchPosition(function(position) {
+            navigator.geolocation.watchPosition(function(position) {
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
@@ -96,56 +118,57 @@
             userMarker.setPosition(pos)
 
 
-            qAr.forEach(function(qInfo){
-              if(qInfo.radius.getBounds().contains(userMarker.position)){
-                   
-                $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qInfo.quest.qId)})
-                .done((data) => {
-                    console.log(data)
-                    if(data == "OK"){
-                        $(".startQuestion").css({ display: "flex" }).html("You Found a Question, Tap to Start")
-                        createQuestion(qInfo)
-                        console.log(qInfo)
-                    }else{
-                        $(".startQuestion").css({ display: "flex" }).html("Someone is Playing Right Now!")
-                    }
-                })
-              }else{
-                $(".startQuestion").css({ display: "none" })
-              }
-            })
-
-
             $.get('php/users.php')
                 .done((data) => {
                     data = JSON.parse(data)
                     data.forEach(function (enemy) {
+                      console.log(enemy)
                         // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
                         if (enemy.userId != userInloged[0].userId) {
                             // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
+                            let pos = {
+                              lat: parseFloat(enemy.lat),
+                              lng: parseFloat(enemy.lng)
+                            }
+
                             if (!checkValue(enemy.userId, enemyList)) {
-                                var enemyPos = {
-                                  lat: parseFloat(enemy.lat),
-                                  lng: parseFloat(enemy.long),
+
+                                var icon = {
+                                  url: 'img/enemyface.svg', // url
+                                  scaledSize: new google.maps.Size(50, 50), // scaled size
+                              };
+
+                                var enemyPos = new google.maps.Marker({
+                                  position: pos,
+                                  icon: icon,
                                   map:map
-                                }
+                                })
+
+                                var infoWindow = new google.maps.InfoWindow({
+                                  content: enemy.userName + " score" + enemy.userScore
+                                })
+                    
+                                enemyPos.addListener('click', function() {
+                                  infoWindow.open(map, enemyPos);
+                                });
+
                                 enemyList.push({ enemyPos: enemyPos, id: enemy.userId })
                             }else{
                                 // IF enemyList conatin Change enemy change update cords. 
                                 enemyList.forEach((e) =>{
+                                  console.log(e)
                                     if(e.id == enemy.userId){
-                                        e.enemyPos.setPosition(enemyPos)
+                                      e.enemyPos.setPosition(pos)
                                     }
                                 })
                             }
                         }
                     })
-                })
+                })   
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
-          });
-          
+          });    
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
@@ -270,9 +293,9 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
       console.log("Wrong Answer")
   }
 
-  qRadius.setMap(null)
-  qMarker.setMap(null)
-  console.log(qRadius)
+  //MAKE QUESTION + CIRCLE VISIBLE FALSE -> GET.BOUNDS() SET THEN TO FALSE! ( I THINK <3 )
+  qRadius.setVisible(false)
+  qMarker.setVisible(false)
 
   $.get('php/questions.php', { activite: "isNotPlaying", questionID: parseInt(quest.qId)})
       .done((data) =>{
