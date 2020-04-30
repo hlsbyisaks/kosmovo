@@ -2,19 +2,44 @@
       // prompted by your browser. If you see the error "The Geolocation service
       // failed.", it means you probably did not give permission for the browser to
       // locate you.
-      var map, infoWindow;
+      var map, infoWindow, userMarker;
       function initMap() {
 
         //CREATING MAP
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
+          center: {lat: 55.5941888, lng: 55.5941888},
           zoom: 20
         });
         infoWindow = new google.maps.InfoWindow;
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
-          navigator.geolocation.watchPosition(function(position) {
+
+            $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
+                .done((data) => {
+                    data = JSON.parse(data)
+
+                    data.forEach(function (quest) {
+                        var qPos = {lat: parseFloat(quest.lat), lng: parseFloat(quest.long)};
+
+                        let qMark = new google.maps.Marker({
+                            position: qPos,
+                            map: map
+                        })
+
+                        let circle = new google.maps.Circle({
+                            map: map,
+                            radius: 10,
+                            fillColor: '#AA0000'
+                        })
+                        circle.bindTo('center', qMark, 'position');
+                        })
+                    
+                })
+
+          // PLACE ONE TIME
+          navigator.geolocation.getCurrentPosition(function(position) {
+
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
@@ -23,11 +48,28 @@
             infoWindow.setPosition(pos);
             map.setCenter(pos);
 
-            var userMarker = new google.maps.Marker({
+            userMarker = new google.maps.Marker({
               position: pos,
               map: map,
               title: "USER"
             })
+
+            
+
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+
+
+          //UPDATE
+          navigator.geolocation.watchPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            userMarker.setPosition(pos)
+
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());

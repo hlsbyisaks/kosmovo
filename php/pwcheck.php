@@ -27,5 +27,4 @@ if ($hashedPwdInDb == 1) {
 }
        
 
-
 ?>

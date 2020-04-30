@@ -1,14 +1,13 @@
 let questions = []
 let enemyList = []
-let played
+let played;
 let updatingInterval;
 
 let timer;
 
 function map() {
-    navigator.geolocation.watchPosition(function (location) {
+    navigator.geolocation.getCurrentPosition(function (location) {
         let latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-        
 
         var mymap = L.map('map').setView(latlng, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -17,56 +16,20 @@ function map() {
             id: 'mapbox.streets',
             accessToken: 'pk.eyJ1IjoiYmJyb29rMTU0IiwiYSI6ImNpcXN3dnJrdDAwMGNmd250bjhvZXpnbWsifQ.Nf9Zkfchos577IanoKMoYQ'
         }).addTo(mymap);
-        // THIS IS LOCATION BASED
-        //var user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
-       // var user = L.marker(new L.LatLng(userInloged[0].lat, userInloged[0].lng)).addTo(mymap);
         let user = L.marker(new L.LatLng(location.coords.latitude, location.coords.longitude)).addTo(mymap);
 
         // GET ALL QUESTION AND DISPLAY THEM
-
-        $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId })
+        $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
             .done((data) => {
                 data = JSON.parse(data)
-                console.log(data)
-
 
                 data.forEach(function (quest) {
-                    console.log(quest)
                     let question = L.marker(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long))).addTo(mymap);
-                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 10).addTo(mymap);
+                    let radius = L.circle(new L.LatLng(parseFloat(quest.lat), parseFloat(quest.long)), 2000).addTo(mymap);
                     questions.push({ quest, questionCord: question, radiusCord: radius })
                 })
             })
-
-
-
-        //SIMUALTION OF WALKING    
-
-/*         $(document).keydown(function (e) {
-            switch (e.which) {
-                case 37:    //left arrow key
-                    userInloged[0].lng -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 38:    //up arrow key
-                    userInloged[0].lat += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 39:    //right arrow key
-                    userInloged[0].lng += 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-                case 40:    //bottom arrow key
-                    userInloged[0].lat -= 0.001 ;
-                    UpdateCord("user")
-                    checkIfQuestionHit()
-                    break;
-            }
-        }) */
 
 
         // FUNCTION THAT DISPLAY ENEMYS ON MAP
@@ -143,7 +106,13 @@ function map() {
         }
 
         function createQuestion(q) {
-            $(".startQuestion").unbind("click").click(function () {             
+            $(".startQuestion").unbind("click").click(function () {
+                
+                $.get('php/questions.php', { activite: "isPlaying", questionID: parseInt(q.qId)})
+                    .done((data) =>{
+
+                    })
+
                 $(".startQuestion").css({display: "none"})
                 $(".questionWrapper").css({display: "flex"})
 
@@ -154,6 +123,8 @@ function map() {
                 questionAlt = shuffle(questionAlt)
                 console.log(questionAlt)
 
+                // CLEAR BOX
+                $(".questionAnswer").html("")
                 for(let i = 0; i < 4; i++){
                     console.log(questionAlt[i])
                     $("<div>",{
@@ -162,10 +133,10 @@ function map() {
                     }).click(function(){
                         if(this.innerHTML == q.alt1){
                             console.log("YES")
-                            QuestionFinish("RightAnswer", q.score)
+                            QuestionFinish("RightAnswer", q)
                         }else{
                             console.log("NO")
-                            QuestionFinish("WrongAnswer")
+                            QuestionFinish("WrongAnswer", q)
                         }
                     })
                     
@@ -197,50 +168,68 @@ function map() {
                     $(".TimeLeft").css({width: fullBar + "%"})
                 }else{
                     clearInterval(timer)
-                    QuestionFinish("noTime")
+                    QuestionFinish("noTime", q)
                 }
             },1000*sec/100)
 
         }
 
-        function QuestionFinish(whatHappend, score){
+        function QuestionFinish(whatHappend, q){
             $(".questionWrapper").css({display: "none"})
             clearInterval(timer)
-
+            console.log(q)
             if(whatHappend == "noTime"){
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 0})
+                .done((data) =>{
+
+                })
                 console.log("NO TIME")
             }else if(whatHappend == "RightAnswer"){
-                console.log("Right Answer")
-                console.log("You earned " + score)
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 1})
+                .done((data) =>{
+
+                })
             }else if(whatHappend == "WrongAnswer"){
+                $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(q.qId), userId: userInloged[0].userId, correct: 0})
+                .done((data) =>{
+
+                })
                 console.log("Wrong Answer")
             }
+
+
+            $.get('php/questions.php', { activite: "isNotPlaying", questionID: parseInt(q.qId)})
+                .done((data) =>{
+
+            })
         }
 
         // Update Cords of inloged user and upload to DB.
         function UpdateCord() {
-            $.get('php/updateCords.php', {
-                lat: location.coords.lat,
-                lng: location.coords.lng,
-                userId: userInloged[0].userId
-            })
-                .done(() => {
-                    console.log("updated")
-                    // Print out new cords on map.
-                    navigator.geolocation.watchPosition(function (location) {
-                        user.setLatLng([location.coords.latitude, location.coords.longitude])
-                        $('.user_name').html(location.coords.latitude + ' ' + location.coords.longitude)
-                    })
+                $.get('php/updateCords.php', {
+                    lat: location.coords.lat,
+                    lng: location.coords.lng,
+                    userId: userInloged[0].userId
                 })
-    }
+                    .done(() => {
+                        console.log("updated")
+                        // Print out new cords on map.
+                    })
+        }
 
 
         updatingInterval = setInterval(function(){
             getEnemys()
             UpdateCord()
-        },2000)
+        },5000) 
     })
+    
 }
+
+
+
+
+
 
 
 

@@ -2,7 +2,7 @@ let userInloged;
 let encPassword
 
 // LOGIN IF COOKIE SAVED
-
+/*
 if(document.cookie.length > 0){
     let cookie = document.cookie.split(",")
     $.get('php/login.php', {
@@ -18,8 +18,10 @@ if(document.cookie.length > 0){
 }else{
     loginPage()
     WhatPageAreUserOn("login")
-}
+}*/
 
+WhatPageAreUserOn("login")
+loginPage()
 
 
 function login() {
@@ -32,22 +34,22 @@ function login() {
 
             $.get('php/pwcheck.php', {
                 username: username,
-                password: password,
+                password: password
             })
             .done((data) => {
+                console.log(data)
                 data = JSON.parse(data)
                 console.log(data)
                 
 
                 if (data[0] != undefined) {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
-                    WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-                    initMap()
+                    WhatPageAreUserOn("game", data[0].userId, data[0].userName) 
                     userInloged = data
                     setCookie(userInloged)
+                    initMap()
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
-                    console.log(userInloged)
 
                 } else {
                     prompt('Username and password does not match')
