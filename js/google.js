@@ -117,6 +117,16 @@
 
             userMarker.setPosition(pos)
 
+            $.get('php/updateCords.php', {
+                lat: pos.lat,
+                lng: pos.lng,
+                userId: userInloged[0].userId
+             })
+              .done(() => {
+                  console.log("updated")
+                  // Print out new cords on map.
+              })
+
 
             $.get('php/users.php')
                 .done((data) => {
