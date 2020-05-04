@@ -76,6 +76,7 @@
                  qAr.push({radius: circle, quest: quest, marker: qMark})
                })
 
+               
                //FIX SO ITS IN THE DONE FUCTION ON ROW61-76 JUST FOR BEING COOLER CODE!
                qAr.forEach(function(qInfo){
                 if(qInfo.radius.getBounds().contains(userMarker.position)){
@@ -99,7 +100,6 @@
                 }
                 
               })
-              
          })
             
 
@@ -263,22 +263,6 @@ function shuffle(a) {
       return a;
 }
 
-function startQuestionTimer(){
-    let sec = 60;
-
-    let fullBar = 100;
-
-    timer = setInterval(function(){
-        if(fullBar >= 0){
-            fullBar -= 1
-            $(".TimeLeft").css({width: fullBar + "%"})
-        }else{
-            clearInterval(timer)
-            QuestionFinish("noTime", q)
-        }
-    },1000*sec/100)
-
-}
 
 function QuestionFinish(whatHappend, quest, qMarker, qRadius){
   $(".questionWrapper").css({display: "none"})
@@ -312,3 +296,38 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
 
   })
 }
+
+let sec = 14;
+function Timer(){
+  $(".questionTimer").html(sec)
+  timer = setInterval(timerPulse, 1000)
+}
+
+function timerPulse(){
+  sec = sec - 1
+  $(".questionTimer").html(sec)
+  if(sec <= 0){
+    clearInterval(timer)
+    sec = 30;
+    $(".questionTimer").removeClass("questionTimerShake")
+  }else if(sec <= 10){
+    $(".questionTimer").addClass("questionTimerShake")
+  }
+
+  
+}
+
+
+function DisplayQuestTest(){
+  $(".questionText").html("HELLO HELLO HELLO")
+  $(".questionWrapper").css({display: "flex"})
+  $(".questionAnswer").css({display: "grid"}).html("<div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div>")
+  Timer()
+}
+
+
+
+
+
+
+
