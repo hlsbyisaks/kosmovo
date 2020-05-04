@@ -38,11 +38,14 @@ function login() {
             })
             .done((data) => {
                 console.log(data)
+                if (data == 'wrong password') {
+                    loginErrorMsg('Error: Incorrect username or password')
+                }
                 data = JSON.parse(data)
                 console.log(data)
                 
 
-                if (data[0] != undefined) {
+                if (data[0] != 'wrong password') {
                     console.log('Login success, userId: ' + data[0].userId + ' username: ' + data[0].userName)
                     WhatPageAreUserOn("game", data[0].userId, data[0].userName)
                     userInloged = data
@@ -52,12 +55,10 @@ function login() {
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
-                } else {
-                    prompt('Username and password does not match')
-                }
+                } 
             })
         } else {
-            prompt('Please fill both forms')
+            loginErrorMsg('Error: Please fill both forms')
         }
     })
 }
@@ -74,6 +75,26 @@ function resetPW() {
     //Reset functionality...
 }
 
+//Displays error message at login with the error text as an argument
+//Also checks array for empty input fields to visualize missing inputs
+function loginErrorMsg(Msg) {
+    if (Msg == '') {
+        $('#loginErrorMsg').css({'display': 'none'})
+    }
+
+    $('#loginErrorMsg').html(Msg)
+    $('#loginErrorMsg').css({'display': 'initial'})
+
+    array =['#username', '#password', '#email', '#repeatPassword']
+    array.forEach(element => {
+        if ($(element).val() == '') {
+            $(element).css({'border-bottom': '2px solid var(--main-yellow-color)'})
+            $(element).click(function() {
+                $(element).css({'border-bottom': '2px solid var(--main-white-color)'})
+            })
+        }
+    });  
+}
 
 /* Elements */
 function loginPage() {
@@ -99,6 +120,12 @@ function loginPage() {
         appendTo:'#loginContainer'
     }).css({'background-image': 'url(img/logo.png)', 'height': '227px', 
              'background-size': 'cover', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
+
+    $("<p>", {
+    'id': 'loginErrorMsg',
+    html: 'test error',
+    appendTo:'#loginContainer'
+    }).css({'display': 'none'})
     
     $("<input>", {
         'id': 'username',

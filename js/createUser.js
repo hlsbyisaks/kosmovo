@@ -14,12 +14,13 @@ function createUser() {
                 loginPage()
             })
         } else {
-            alert('Passwords do not match')
+            loginErrorMsg('Passwords do not match')
         }
     } else {
-        alert('Please fill all forms')
+        loginErrorMsg('Please fill all forms')
     }
 }
+
 
 
 
@@ -48,6 +49,12 @@ function registerPage() {
         appendTo:'#loginContainer'
     }).css({'background-image': 'url(img/logo.png)', 'height': '227px', 
              'background-size': 'cover', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
+
+    $("<p>", {
+        'id': 'loginErrorMsg',
+        html: 'test error',
+        appendTo:'#loginContainer'
+    }).css({'display': 'none'})
     
     $("<input>", {
         'id': 'username',
