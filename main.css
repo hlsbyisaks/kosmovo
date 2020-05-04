@@ -94,6 +94,12 @@ input[type=text]:valid {
     box-shadow: 1px 1px black;
 }
 
+#loginErrorMsg {
+    background-color: var(--main-yellow-color);
+    color: var(--main-red-color);
+    text-align: center;
+}
+
 /* GAME PAGE */
 
 /* HEADER */
