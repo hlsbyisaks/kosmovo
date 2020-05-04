@@ -160,7 +160,9 @@ input[type=text]:valid {
 }
 
 
-.questionWrapper > div{
+
+
+.questionWrapperInside{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -187,11 +189,31 @@ input[type=text]:valid {
 }
 
 .questionTimer{
-    display: flex;
-    flex-grow: 1;
-    margin: 0% 10px;
-    border: 1px solid black;
+    position: absolute;
+    font-size: 34px;
+    font-family: Molot;
+    top: 15px;
+    right: 15px;
 }
+
+.questionTimerShake{
+    transition: 3s;
+    animation: 1s shake infinite;
+    color: red;
+    top: 0px;
+    right: 25px;
+    font-size: 80px;
+}
+
+@keyframes shake {
+    0% { transform: skewX(-15deg); }
+    5% { transform: skewX(15deg); }
+    10% { transform: skewX(-15deg); }
+    15% { transform: skewX(15deg); }
+    20% { transform: skewX(0deg); }
+    100% { transform: skewX(0deg); }  
+  }
+  
 
 .TimeLeft{
     width: 100%;
