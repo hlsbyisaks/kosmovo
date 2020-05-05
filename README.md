@@ -20,6 +20,8 @@ back knapp från register
 popup
 fixa till header i game page
 
+begränsa username till 1 pers
+
 
 
 <?php

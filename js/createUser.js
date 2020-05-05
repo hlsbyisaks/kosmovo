@@ -11,7 +11,12 @@ function createUser() {
                 mail: mail
             })
             .done((data) => {
-                loginPage()
+                if (data == 'Username already exists') {
+                    loginErrorMsg('Username already exists')
+                } else {
+                    loginPage()
+                    loginErrorMsg('Success!')
+                }
             })
         } else {
             loginErrorMsg('Passwords do not match')
