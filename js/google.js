@@ -244,11 +244,10 @@ function createQuestion(qInfo) {
                         console.log("NO")
                         QuestionFinish("WrongAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
                     }
-                })
-                
+                })  
             }
 
-            startQuestionTimer()  
+            Timer()
         })
 }
 
@@ -266,7 +265,7 @@ function shuffle(a) {
 
 function QuestionFinish(whatHappend, quest, qMarker, qRadius){
   $(".questionWrapper").css({display: "none"})
-  clearInterval(timer)
+  timerStop()
   console.log(quest)
   if(whatHappend == "noTime"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})
@@ -297,7 +296,7 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
   })
 }
 
-let sec = 14;
+let sec = 30;
 function Timer(){
   $(".questionTimer").html(sec)
   timer = setInterval(timerPulse, 1000)
@@ -307,14 +306,16 @@ function timerPulse(){
   sec = sec - 1
   $(".questionTimer").html(sec)
   if(sec <= 0){
-    clearInterval(timer)
-    sec = 30;
+    timerStop()
     $(".questionTimer").removeClass("questionTimerShake")
   }else if(sec <= 10){
     $(".questionTimer").addClass("questionTimerShake")
   }
+}
 
-  
+function timerStop(){
+  clearInterval(timer)
+  sec = 30;
 }
 
 
