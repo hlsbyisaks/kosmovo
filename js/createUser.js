@@ -52,8 +52,8 @@ function registerPage() {
     $("<div>", {
         'id': 'logo',
         appendTo:'#loginContainer'
-    }).css({'background-image': 'url(img/logo.png)', 'height': '227px', 
-             'background-size': 'cover', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
+    }).css({'background-image': 'url(img/logo.png)', 'width': '100%', 'height': '235px', 
+    'background-size': 'contain', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
 
     $("<p>", {
         'id': 'loginErrorMsg',
