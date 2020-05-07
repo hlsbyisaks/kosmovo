@@ -83,24 +83,30 @@ input[type=text]:valid {
 }
 
 .button {
-    background-color: var(--main-white-color);
-    color: var(--main-yellow-color);
+    background-color: var(--main-yellow-color);
+    color: var(--main-red-color);
     font-size: 20px;
     padding: 5px;
-    border: 2px solid var(--main-blue-color);
-    border-radius: 10px;  
+    border: 0px solid var(--main-blue-color);
+    /* border-radius: 10px;   */
     width: 100%;
+    font-family: Molot;
+    
 }
 
 .button:hover {
     color: var(--main-lightblue-color);
-    box-shadow: 1px 1px black;
+    /* box-shadow: 1px 1px black; */
 }
 
 #loginErrorMsg {
-    background-color: var(--main-yellow-color);
-    color: var(--main-red-color);
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+    border: 2px solid var(--main-yellow-color);
+    padding: 2px;
     text-align: center;
+    font-family: Allerta-Regular;
+    transition: ease-in;
 }
 
 /* GAME PAGE */
