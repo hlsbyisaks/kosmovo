@@ -24,6 +24,9 @@ begränsa username till 1 pers
 Flytta kampanjrelaterade frågor till FP och SP
 
 
+Padding på kosmovo 2020
+kärlek till kanpparna. Bort med styling och gölr dem square med lite radius
+
 
 <?php
     function connectDB() {

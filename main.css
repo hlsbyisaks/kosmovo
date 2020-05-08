@@ -123,6 +123,18 @@ input[type=text]:valid {
 .userInfo {
     position: absolute;
     margin: 10px;
+    display: flex;
+}
+
+.user_name, .user_score{
+    font-family: Allerta-Regular;
+    width: 100px;
+    margin-left: 10px;
+}
+
+.logout_button, .score_button {
+    text-align: center;
+    margin: 1px;
 }
 
 .logoContainer {
