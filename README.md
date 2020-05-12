@@ -20,8 +20,12 @@ back knapp från register
 popup
 fixa till header i game page
 
-begränsa username till 1 pers
+begränsa username till 1 pers 
+Flytta kampanjrelaterade frågor till FP och SP
 
+
+Padding på kosmovo 2020
+kärlek till kanpparna. Bort med styling och gölr dem square med lite radius
 
 
 <?php
