@@ -25,25 +25,14 @@ $("<div>", {
 
 let scoreArr = []
 
-function scoreboard(username) {
+function scoreboard() {
     WhatPageAreUserOn("scoreboard")
 
     $.get('php/getScore.php', {
-        username: username
     })
     .done((data) => {
         data = JSON.parse(data)
         console.log(data)
-
-        scoreArr.push([username, data[0]])
-
-
-        scoreArr.forEach(element => {
-            $('<div>', {
-                html: element[0] + ": " + element[1][0],
-                appendTo: '.scoreboard_wrapper'
-            })
-        });
     })
     
 }

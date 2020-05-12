@@ -278,6 +278,10 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
       .done((data) =>{
 
       })
+      $.get('php/updateScore.php', {userId: userInloged[0].userId, score: quest.score})
+      .done((data) =>{
+
+      })
   }else if(whatHappend == "WrongAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})
       .done((data) =>{
