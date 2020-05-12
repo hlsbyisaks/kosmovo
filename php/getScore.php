@@ -9,8 +9,8 @@ $query = 'SELECT COUNT(score) AS score FROM (
     INNER JOIN user ON userplayed.userId=user.userId
     INNER JOIN question ON userplayed.qId=question.qId
     WHERE correct = "1" AND userName = "?"
-    ) AS tmp;';
-    
+    ) AS tmp';
+
 $sql = $pdo->prepare($query);
 $sql->bindParam(1, $_GET['username']);
 $sql->execute();

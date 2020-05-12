@@ -33,4 +33,13 @@ kärlek till kanpparna. Bort med styling och gölr dem square med lite radius
         return new PDO('mysql:host=10.209.2.88;dbname=244339-kosmovo2020', '244339_wa17534', 'kosmovo2020');
     }
 ?>
+
+SELECT COUNT(score) AS score FROM (
+    SELECT userplayed.qId, userplayed.userId, userplayed.correct, user.userName, question.score
+    FROM userplayed
+    INNER JOIN user ON userplayed.userId=user.userId
+    INNER JOIN question ON userplayed.qId=question.qId
+    WHERE correct = "1" AND userName = "?"
+    ) AS tmp
 -->
+
