@@ -62,8 +62,9 @@ function scoreboard() {
                         lng: parseFloat(data[0].lng),
                       };
                       backToGame()
+                      map.setZoom(16)
                       map.panTo(pos)
-                      map.setZoom(15)
+                      
 
                     
                 })

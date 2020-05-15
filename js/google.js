@@ -119,7 +119,6 @@
             };
 
             userMarker.setPosition(pos)
-            map.panTo(pos)
 
             $.get('php/updateCords.php', {
                 lat: pos.lat,
