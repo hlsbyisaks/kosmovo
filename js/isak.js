@@ -20,7 +20,7 @@ $("<div>", {
 
 
 function backToGame() {
-    WhatPageAreUserOn("game")
+    WhatPageAreUserOn("game", userInloged[0].userId, userInloged[0].userName)
 }
 
 

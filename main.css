@@ -131,7 +131,7 @@ input[type=text]:valid {
 .user_name, .user_score{
     font-family: Allerta-Regular;
     width: 100px;
-    margin-left: 10px;
+    margin-left: 2px;
 }
 
 .logout_button, .score_button {
