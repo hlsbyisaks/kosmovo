@@ -19,6 +19,9 @@ $("<div>", {
 
 
 
+function backToGame() {
+    WhatPageAreUserOn("game")
+}
 
 
 //SCOREBOARD
@@ -27,9 +30,6 @@ let scoreArr = []
 
 $('.score_button').click(scoreboard)
 
-function backToGame() {
-    WhatPageAreUserOn("game")
-}
 
 function scoreboard() {
     WhatPageAreUserOn("scoreboard")
@@ -38,6 +38,7 @@ function scoreboard() {
     })
     .done((data) => {
         data = JSON.parse(data)
+        data = data.sort(compareIndexFound);
         console.log(data)
         $('.scoreboard_wrapper').html('')
 
@@ -52,6 +53,21 @@ function scoreboard() {
                 html: element.userName + ": " + element.userScore,
                 appendTo: '.scoreboard_wrapper',
                 'class': 'scoreboard_item'
+            }).click(function(e){
+                $.get('php/userCords.php', { userId: element.userId})
+                .done((data) =>{
+                    data = JSON.parse(data)
+                    var pos = {
+                        lat: parseFloat(data[0].lat),
+                        lng: parseFloat(data[0].lng),
+                      };
+                      backToGame()
+                      map.setZoom(16)
+                      map.panTo(pos)
+                      
+
+                    
+                })
             })
         });
 
@@ -63,7 +79,13 @@ function scoreboard() {
             appendTo:'.scoreboard_wrapper',
         }).click(backToGame)
     })
-    
-    
-
 }
+
+function compareIndexFound(a, b) {
+    if (parseInt(a.userScore) < parseInt(b.userScore)) { return 1; }
+    if (parseInt(a.userScore) > parseInt(b.userScore)) { return -1; }
+    return 0;
+  }
+
+
+  

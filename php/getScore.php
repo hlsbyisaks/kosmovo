@@ -3,7 +3,7 @@ include('connectToDB.php');
 $pdo = connectDB();
 
 
-$query = 'SELECT userName, userScore from user';
+$query = 'SELECT userName, userScore, userId from user';
     
 $sql = $pdo->prepare($query);
 $sql->execute();
