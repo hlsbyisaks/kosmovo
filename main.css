@@ -88,7 +88,6 @@ input[type=text]:valid {
     font-size: 20px;
     padding: 5px;
     border: 0px solid var(--main-blue-color);
-    /* border-radius: 10px;   */
     width: 100%;
     font-family: Molot;
     
@@ -96,7 +95,6 @@ input[type=text]:valid {
 
 .button:hover {
     color: var(--main-lightblue-color);
-    /* box-shadow: 1px 1px black; */
 }
 
 #loginErrorMsg {
@@ -115,15 +113,19 @@ input[type=text]:valid {
 
 .header{
     width: calc(100vw-4px);
-    height: 10vh;
+    height: 5vh;
     background-color: var(--main-red-color);
     color: var(--main-yellow-color);
 }
 
 .userInfo {
     position: absolute;
-    margin: 10px;
     display: flex;
+}
+
+.userInfo_content {
+    flex-direction: column;
+    justify-content: center;
 }
 
 .user_name, .user_score{
@@ -134,7 +136,9 @@ input[type=text]:valid {
 
 .logout_button, .score_button {
     text-align: center;
-    margin: 1px;
+    margin-left: 2px;
+    font-size: 16px;
+    height: 5vh;
 }
 
 .logoContainer {

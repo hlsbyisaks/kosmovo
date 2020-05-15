@@ -3,13 +3,13 @@
 $("<div>", {
     html: 'KOSMOVO',
     appendTo:'.logoContainer > div'
-}).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '20px', 'margin-top': '6.75px', 'text-align': 'center'})
+}).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '30px', 'text-align': 'center'})
 
-$("<div>", {
+/* $("<div>", {
     html: '2020',
     appendTo:'.logoContainer > div'
 }).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '39px',
-         'margin-top': '-13.5px', 'text-align': 'center'})
+         'margin-top': '-13.5px', 'text-align': 'center'}) */
 
 /* $("<div>", {
     'id': 'logo',
