@@ -34,6 +34,9 @@ kärlek till kanpparna. Bort med styling och gölr dem square med lite radius
     }
 ?>
 
+ändra page titel till kosmovo
+fixa logout vid inaktivitet
+
 SELECT COUNT(score) AS score FROM (
     SELECT userplayed.qId, userplayed.userId, userplayed.correct, user.userName, question.score
     FROM userplayed

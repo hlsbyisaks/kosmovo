@@ -25,6 +25,12 @@ $("<div>", {
 
 let scoreArr = []
 
+$('.score_button').click(scoreboard)
+
+function backToGame() {
+    WhatPageAreUserOn("game")
+}
+
 function scoreboard() {
     WhatPageAreUserOn("scoreboard")
 
@@ -33,6 +39,31 @@ function scoreboard() {
     .done((data) => {
         data = JSON.parse(data)
         console.log(data)
+        $('.scoreboard_wrapper').html('')
+
+        $('<div>', {
+            html: 'Ladder',
+            appendTo: '.scoreboard_wrapper',
+            'class': 'scoreboard_item'
+        })
+
+        data.forEach(element => {
+            $('<div>', {
+                html: element.userName + ": " + element.userScore,
+                appendTo: '.scoreboard_wrapper',
+                'class': 'scoreboard_item'
+            })
+        });
+
+
+        $("<input>", {
+            value: 'Back',
+            class: 'button',
+            type:'button',
+            appendTo:'.scoreboard_wrapper',
+        }).click(backToGame)
     })
     
+    
+
 }

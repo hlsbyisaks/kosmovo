@@ -262,6 +262,22 @@ input[type=text]:valid {
 }
 
 /* SCOREBOARD PAGE */
+#scoreboard_page {
+    background-color: var(--main-red-color);
+}
+
+.scoreboard_wrapper {
+    flex-direction: column;
+    font-family: allerta-regular;
+    color: var(--main-yellow-color);
+    font-size: 26px;
+}
+
+.scoreboard_wrapper > div:first-child {
+    font-family: Molot;
+    font-size: 36px;
+}
+
 
 /* ADMIN PAGE */
 
