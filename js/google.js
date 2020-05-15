@@ -119,6 +119,7 @@
             };
 
             userMarker.setPosition(pos)
+            map.panTo(pos)
 
             $.get('php/updateCords.php', {
                 lat: pos.lat,
@@ -333,6 +334,10 @@ function DisplayQuestTest(){
   $(".questionAnswer").css({display: "grid"}).html("<div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div>")
   Timer()
 }
+
+
+
+
 
 
 
