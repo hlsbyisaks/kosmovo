@@ -76,7 +76,6 @@ function resetPW() {
         mail: email
     })
     .done((data) =>{
-        
     })
     console.log('Reset code has been sent to: ' + email)
     //Reset functionality...

@@ -13,7 +13,9 @@ function randomPassword() {
     return implode($pass); //turn the array into a string
 }
 
-$newPass = randomPassword()
+
+
+$newPass = randomPassword();
 
 $newPassEncode = password_hash($newPass, PASSWORD_DEFAULT); 
 
@@ -23,6 +25,13 @@ $sql = $pdo->prepare($query);
 $sql->bindParam(1, $newPassEncode);
 $sql->bindParam(2, $_GET['mail']);
 $sql->execute();
+
+$query = 'SELECT userName from user where user.mail = ?';
+$sql = $pdo->prepare($query);
+$sql->bindParam(1, $_GET['mail']);
+$sql->execute();
+
+$userName = $sql->fetchAll(\PDO::FETCH_ASSOC);
 
 
 $to = $_GET["mail"];
@@ -37,7 +46,8 @@ $message = "
 <p>Here is your new password</p>
 <table>
 <tr>
-<th>".$newPass."</th>
+<th>Username: ".$userName[0]["userName"]."<th>
+<th>New-Password: ".$newPass."</th>
 </tr>
 </table>
 <

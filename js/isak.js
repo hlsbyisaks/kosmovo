@@ -41,18 +41,15 @@ function scoreboard() {
         data = data.sort(compareIndexFound);
         console.log(data)
         $('.scoreboard_wrapper').html('')
+        let topTen = []
+        for(let i = 0; i < 10; i++){
+            topTen.push(data[i])
+        }
 
-        $('<div>', {
-            html: 'Ladder',
-            appendTo: '.scoreboard_wrapper',
-            'class': 'scoreboard_item'
-        })
-
-        data.forEach(element => {
+        topTen.forEach(function(element,index){
             $('<div>', {
-                html: element.userName + ": " + element.userScore,
-                appendTo: '.scoreboard_wrapper',
-                'class': 'scoreboard_item'
+                id: index,
+                appendTo: '.scoreboard_wrapper'
             }).click(function(e){
                 $.get('php/userCords.php', { userId: element.userId})
                 .done((data) =>{
@@ -64,20 +61,31 @@ function scoreboard() {
                       backToGame()
                       map.setZoom(16)
                       map.panTo(pos)
-                      
-
-                    
                 })
+            })
+
+            $('<div>',{
+                html: index + 1,
+                appendTo: "#" + index
+            })
+            $('<div>',{
+                html: "  /  ",
+                appendTo: "#" + index
+            })
+            $('<div>',{
+                html: element.userName ,
+                appendTo: "#" + index
+            })
+            $('<div>',{
+                html: "  /  ",
+                appendTo: "#" + index
+            })
+            $('<div>',{
+                html: element.userScore,
+                appendTo: "#" + index
             })
         });
 
-
-        $("<input>", {
-            value: 'Back',
-            class: 'button',
-            type:'button',
-            appendTo:'.scoreboard_wrapper',
-        }).click(backToGame)
     })
 }
 
