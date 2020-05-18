@@ -57,7 +57,7 @@
 
                circle = new google.maps.Circle({
                  map: map,
-                 radius: 10,
+                 radius: 20,
                  fillColor: '#AA0000'
                })
                circle.bindTo('center', qMark, 'position');
