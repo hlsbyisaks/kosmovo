@@ -15,7 +15,9 @@ function createUser() {
                     loginErrorMsg('Username already exists')
                 } else {
                     loginPage()
-                    loginErrorMsg('Success!')
+                    $("#username").val(username)
+                    $("#password").val(password)
+                    loginErrorMsg('Account was Created!')
                 }
             })
         } else {

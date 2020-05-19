@@ -57,7 +57,7 @@
 
                circle = new google.maps.Circle({
                  map: map,
-                 radius: 10,
+                 radius: 20,
                  fillColor: '#AA0000'
                })
                circle.bindTo('center', qMark, 'position');
@@ -286,7 +286,10 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
       })
       $.get('php/updateScore.php', {userId: userInloged[0].userId, score: quest.score})
       .done((data) =>{
-
+        $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
+        .done((data) =>{
+          $(".user_score").html('Score: ' + data)
+        })
       })
   }else if(whatHappend == "WrongAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})

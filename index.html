@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Page Title</title>
+<title>Kosmovo 2020</title>
 <link rel='stylesheet' href="main.css">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -20,7 +20,7 @@
                 <div class="user_icon"></div>
                 <div class="logout_button button flex">Logout</div>
                 <div class="score_button button flex">Ladder</div>
-                <div>
+                <div class="userInfo_content flex">
                     <div class="user_name">Max</div>
                     <div class="user_score">Score: 0</div>
                 </div>
@@ -44,7 +44,15 @@
         </div>
     </div>
     <div id="scoreboard_page">
-        <div class="scoreboard_wrapper flex"></div>
+        <div class="scoreboard_flex">
+            <div class="score_css">Ladder</div>
+            <div class="header_score_css" >Top / Username / Score</div>
+            <div class="scoreboard_wrapper">
+            </div>
+            <input class="button" type="button" id="backButton" value="BACK" onclick="backToGame()">
+        </div>
+        
+
     </div>
     <div id="admin_page"></div>
     <script async defer
