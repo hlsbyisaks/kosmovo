@@ -51,7 +51,6 @@ function login() {
                     userInloged = data
                     initMap()
                     setCookie(userInloged)
-                    initMap()
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
