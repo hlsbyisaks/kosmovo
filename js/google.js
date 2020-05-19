@@ -39,6 +39,7 @@
               userMarker = new google.maps.Marker({
                 icon: icon,
                 map: map,
+                pos: pos,
                 title: "USER"
               })
 
@@ -152,7 +153,8 @@
                   })
 
                   qAr.forEach(function(qInfo){
-                    if(qInfo.radius.getBounds().contains(userMarker.position)){
+                    if(qInfo.radius.getBounds().contains(userMarker.pos)){
+                      $(".logout_button").html("INSIDE")
                       $(".startQuestion").css({ display: "flex" })
                       $(".startQuestion").html("You Found a Question, Tap to Start")
                 
@@ -169,6 +171,7 @@
                       })
                     })
                     }else{
+                      $(".logout_button").html("OUTSIDE")
                       $(".startQuestion").css({ display: "none" })
                     }
                     
