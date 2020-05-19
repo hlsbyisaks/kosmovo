@@ -6,10 +6,10 @@ $pdo = connectDB();
 if($_GET["activite"] == "getAllQuestion"){
     $query = 'SELECT *
     FROM question
-    WHERE NOT EXISTS
-    (SELECT * 
-        FROM userplayed
-        WHERE userplayed.correct = 1 OR userplayed.userId = ?)';
+    WHERE NOT EXISTS 
+        (SELECT * 
+         FROM userplayed
+         WHERE userplayed.qId = question.qId and userplayed.userId = ?)';
     $sql = $pdo->prepare($query);
     $sql->bindParam(1, $_GET['userId']);
     $sql->execute();

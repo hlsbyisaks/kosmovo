@@ -7,8 +7,10 @@
       // WHAT TO DO: TIMEOUT FOR WATCHPOSITION
       var map, infoWindow, userMarker;
       let qAr = [];
-      let questions
       let enemyList = []
+      let firstTimeLoadingQuestion = true;
+
+      let qStop = false;
 
       let timer;
       function initMap() {
@@ -51,138 +53,144 @@
                 infoWindow.open(map, userMarker);
               });
 
+              map.setCenter(pos);
+
           })
 
           //UPDATE
             navigator.geolocation.watchPosition(function(position) {
 
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            
+            if(!qStop){
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              
+              userMarker.setPosition(pos)
 
-            map.setCenter(pos);
-
-            userMarker.setPosition(pos)
-
-            $.get('php/updateCords.php', {
-                lat: pos.lat,
-                lng: pos.lng,
-                userId: userInloged[0].userId
-             })
-              .done(() => {
-                  console.log("updated")
-                  // Print out new cords on map.
+              $.get('php/updateCords.php', {
+                  lat: pos.lat,
+                  lng: pos.lng,
+                  userId: userInloged[0].userId
               })
-
-
-            $.get('php/users.php')
-                .done((data) => {
-                    data = JSON.parse(data)
-                    data.forEach(function (enemy) {
-                        // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
-                        if (enemy.userId != userInloged[0].userId) {
-                            // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
-                            let pos = {
-                              lat: parseFloat(enemy.lat),
-                              lng: parseFloat(enemy.lng)
-                            }
-
-                            if (!checkValue(enemy.userId, enemyList)) {
-
-                                var icon = {
-                                  url: 'img/enemyface.svg', // url
-                                  scaledSize: new google.maps.Size(50, 50), // scaled size
-                              };
-
-                                var enemyPos = new google.maps.Marker({
-                                  position: pos,
-                                  icon: icon,
-                                  map:map
-                                })
-
-                                var infoWindow = new google.maps.InfoWindow({
-                                  content: enemy.userName + " score" + enemy.userScore
-                                })
-                    
-                                enemyPos.addListener('click', function() {
-                                  infoWindow.open(map, enemyPos);
-                                });
-
-                                enemyList.push({ enemyPos: enemyPos, id: enemy.userId })
-                            }else{
-                                // IF enemyList conatin Change enemy change update cords. 
-                                enemyList.forEach((e) =>{
-                                    if(e.id == enemy.userId){
-                                      e.enemyPos.setPosition(pos)
-                                    }
-                                })
-                            }
-                        }
-                    })
-                }) 
-
-                $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
-                .done((data) => {
-                    for (var i = 0; i < qAr.length; i++) {
-                      qAr[i].marker.setMap(null);
-                      qAr[i].radius.setMap(null);
-                    }
-
-
-                    data = JSON.parse(data)
-
-                    questions = data
-                    data.forEach(function (quest) {
-                      var qPos = {lat: parseFloat(quest.lat), lng: parseFloat(quest.long)};
-
-                      qMark = new google.maps.Marker({
-                        position: qPos,
-                        map: map
-                      })
-
-                      circle = new google.maps.Circle({
-                        map: map,
-                        radius: 105,
-                        fillColor: '#FEFCE7'
-                      })
-                      circle.bindTo('center', qMark, 'position');
-                    
-                    qAr.push({radius: circle, quest: quest, marker: qMark})
-                  })
-
-                  qAr.forEach(function(qInfo){
-                    if(qInfo.radius.getBounds().contains(userMarker.pos)){
-                      $(".logout_button").html("INSIDE")
-                      $(".startQuestion").css({ display: "flex" })
-                      $(".startQuestion").html("You Found a Question, Tap to Start")
-                
-                      $(".startQuestion").click(function(){
-                      $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qInfo.quest.qId)})
-                      .done((data) => {
-                          console.log(data)
-                          if(data == "OK"){
-                              createQuestion(qInfo)
-                          }else{
-                              $(".startQuestion").css({ display: "flex" })
-                              $(".startQuestion").html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
-                          }
-                      })
-                    })
-                    }else{
-                      $(".logout_button").html("OUTSIDE")
-                      $(".startQuestion").css({ display: "none" })
-                    }
-                    
-                  })
-
+                .done(() => {
+                    console.log("updated")
+                    // Print out new cords on map.
                 })
 
-                
-                
-                
 
+              $.get('php/users.php')
+                  .done((data) => {
+                      data = JSON.parse(data)
+                      data.forEach(function (enemy) {
+                          // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
+                          if (enemy.userId != userInloged[0].userId) {
+                              // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
+                              let pos = {
+                                lat: parseFloat(enemy.lat),
+                                lng: parseFloat(enemy.lng)
+                              }
+
+                              if (!checkValue(enemy.userId, enemyList)) {
+
+                                  var icon = {
+                                    url: 'img/enemyface.svg', // url
+                                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                                };
+
+                                  var enemyPos = new google.maps.Marker({
+                                    position: pos,
+                                    icon: icon,
+                                    map:map
+                                  })
+
+                                  var infoWindow = new google.maps.InfoWindow({
+                                    content: enemy.userName + " score" + enemy.userScore
+                                  })
+                      
+                                  enemyPos.addListener('click', function() {
+                                    infoWindow.open(map, enemyPos);
+                                  });
+
+                                  enemyList.push({ enemyPos: enemyPos, id: enemy.userId })
+                              }else{
+                                  // IF enemyList conatin Change enemy change update cords. 
+                                  enemyList.forEach((e) =>{
+                                      if(e.id == enemy.userId){
+                                        e.enemyPos.setPosition(pos)
+                                      }
+                                  })
+                              }
+                          }
+                      })
+                  }) 
+
+                  $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
+                  .done((data) => {
+
+                      if(!firstTimeLoadingQuestion){
+                          for (var i = 0; i < qAr.length; i++) {
+                            qAr[i].marker.setMap(null);
+                            qAr[i].radius.setMap(null);
+                          }
+                      }
+                      qAr = []
+
+                      firstTimeLoadingQuestion = false;
+
+
+                      data = JSON.parse(data)
+
+                      data.forEach(function (quest) {
+                        var qPos = {lat: parseFloat(quest.lat), lng: parseFloat(quest.long)};
+
+                        qMark = new google.maps.Marker({
+                          position: qPos,
+                          map: map
+                        })
+
+                        circle = new google.maps.Circle({
+                          map: map,
+                          radius: 105,
+                          fillColor: '#DC2521'
+                        })
+                        circle.bindTo('center', qMark, 'position');
+                      
+                      qAr.push({radius: circle, quest: quest, marker: qMark})
+                    })
+
+                    
+                    for(let i = 0; i < qAr.length; i++){
+                          if(qAr[i].radius.getBounds().contains(userMarker.pos)){
+                                $(".startQuestion").css({ display: "flex" })
+                                $(".startQuestion").html("You Found a Question, Tap to Start")
+                          
+                                $(".startQuestion").click(function(e){
+                                e.preventDefault()
+                                $(".startQuestion").css({ display: "none" })
+                                $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qAr[i].quest.qId)})
+                                .done((data) => {
+                                    console.log(data)
+                                    if(data == "OK"){
+                                        qStop = true;
+                                        // OPEN TWO QUESTION? WHATAFUCK? PROBLEM? MAYBE? LET JUST THINK ABOUT THE GAME DOOM, THERE WAS ALOT OF THINGS IN THERE CODE THAT WORKED BUT THEY DIDENT KNOW WHY
+                                        createQuestion(qAr[i])  
+                                    }else{
+                                        $(".startQuestion").css({ display: "flex" })
+                                        $(".startQuestion").html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
+                                    }
+                                })
+                              })
+                              break;
+                          }else{
+                              $(".startQuestion").css({ display: "none" })
+                          }
+                    }
+                      
+
+                })
+                                    
+            }
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -222,7 +230,6 @@ function checkValue(value, arr) {
 }
 
 function createQuestion(qInfo) {
-        $(".startQuestion").unbind("click").click(function () {
             
             $.get('php/questions.php', { activite: "isPlaying", questionID: parseInt(qInfo.quest.qId)})
                 .done((data) =>{
@@ -256,7 +263,7 @@ function createQuestion(qInfo) {
             }
 
             Timer()
-        })
+        
 }
 
 function shuffle(a) {
@@ -304,6 +311,7 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
 
   qMarker.setMap(null)
   qRadius.setMap(null)
+  qStop = false;
 
 
   //MAKE QUESTION + CIRCLE VISIBLE FALSE -> GET.BOUNDS() SET THEN TO FALSE! ( I THINK <3 )
@@ -348,3 +356,32 @@ function timerStop(){
 
 
 
+// ────────▓▓▓▓▓▓▓────────────▒▒▒▒▒▒
+// ──────▓▓▒▒▒▒▒▒▒▓▓────────▒▒░░░░░░▒▒
+// ────▓▓▒▒▒▒▒▒▒▒▒▒▒▓▓────▒▒░░░░░░░░░▒▒▒
+// ───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒░░░░░░░░░░░░░░▒
+// ──▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░▒
+// ──▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░▒
+// ─▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░▒
+// ▓▓▒▒▒▒▒▒░░░░░░░░░░░▒▒░░▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒
+// ▓▓▒▒▒▒▒▒▀▀▀▀▀███▄▄▒▒▒░░░▄▄▄██▀▀▀▀▀░░░░░░▒
+// ▓▓▒▒▒▒▒▒▒▄▀████▀███▄▒░▄████▀████▄░░░░░░░▒
+// ▓▓▒▒▒▒▒▒█──▀█████▀─▌▒░▐──▀█████▀─█░░░░░░▒
+// ▓▓▒▒▒▒▒▒▒▀▄▄▄▄▄▄▄▄▀▒▒░░▀▄▄▄▄▄▄▄▄▀░░░░░░░▒
+// ─▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░▒
+// ──▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░▒
+// ───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀▀░░░░░░░░░░░░░░▒
+// ────▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒
+// ─────▓▓▒▒▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▄░░░░░░░░▒▒
+// ──────▓▓▒▒▒▒▒▒▒▄▀▀▀▀▀▀▀▀▀▀▀▄░░░░░▒▒
+// ───────▓▓▒▒▒▒▒▀▒▒▒▒▒▒░░░░░░░▀░░░▒▒
+// ────────▓▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░▒▒
+// ──────────▓▓▒▒▒▒▒▒▒▒▒░░░░░░░░▒▒
+// ───────────▓▓▒▒▒▒▒▒▒▒░░░░░░░▒▒
+// ─────────────▓▓▒▒▒▒▒▒░░░░░▒▒
+// ───────────────▓▓▒▒▒▒░░░░▒▒
+// ────────────────▓▓▒▒▒░░░▒▒
+// ──────────────────▓▓▒░▒▒
+// ───────────────────▓▒░▒
+// ────────────────────▓▒
+// DONT JUDGE MY CODE
