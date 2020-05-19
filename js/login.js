@@ -51,9 +51,6 @@ function login() {
                     userInloged = data
                     initMap()
                     setCookie(userInloged)
-<<<<<<< HEAD
-=======
-                    initMap()
 
                     $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
                     .done((data) =>{
@@ -61,7 +58,6 @@ function login() {
                         $(".user_score").html('Score: ' + data[0].userScore)
                     })
 
->>>>>>> dd514d141e77d552776d1dc2741ff8f7e19f69a1
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
