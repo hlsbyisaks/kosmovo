@@ -246,10 +246,8 @@ function createQuestion(qInfo) {
                 }).click(function(){
                     if(this.innerHTML == qInfo.quest.alt1){
                         QuestionFinish("RightAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
-                        qInfo.radius.fillColor = "#F3952A"
                     }else{
                         QuestionFinish("WrongAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
-                        qInfo.radius.fillColor = "#DC2521"
                     }
                 })  
             }
@@ -271,8 +269,6 @@ function shuffle(a) {
 
 
 function QuestionFinish(whatHappend, quest, qMarker, qRadius){
-  //CIRCLE BECOMES GREEN
-  qRadius.setOptions({fillColor: "#7CFC00"})
 
   $(".questionWrapper").css({display: "none"})
   timerStop()
