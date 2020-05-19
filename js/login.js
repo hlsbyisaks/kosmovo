@@ -1,24 +1,6 @@
 let userInloged;
 let encPassword
 
-// LOGIN IF COOKIE SAVED
-/*
-if(document.cookie.length > 0){
-    let cookie = document.cookie.split(",")
-    $.get('php/login.php', {
-        username: cookie[0],
-        password: cookie[1]
-    })
-    .done((data) =>{
-        data = JSON.parse(data)
-        userInloged = data
-        WhatPageAreUserOn("game", data[0].userId, data[0].userName)
-        map()
-    })
-}else{
-    loginPage()
-    WhatPageAreUserOn("login")
-}*/
 
 WhatPageAreUserOn("login")
 loginPage()
@@ -51,13 +33,6 @@ function login() {
                     userInloged = data
                     initMap()
                     setCookie(userInloged)
-
-                    $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
-                    .done((data) =>{
-                        data = JSON.parse(data)
-                        $(".user_score").html('Score: ' + data[0].userScore)
-                    })
-
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 

@@ -7,6 +7,7 @@
       // WHAT TO DO: TIMEOUT FOR WATCHPOSITION
       var map, infoWindow, userMarker;
       let qAr = [];
+      let questions
       let enemyList = []
 
       let timer;
@@ -21,102 +22,46 @@
             zoom: 20
           });
           infoWindow = new google.maps.InfoWindow;
+      
 
-          var icon = {
-            url: 'img/profileface.svg', // url
-            scaledSize: new google.maps.Size(50, 50), // scaled size
-        };
+          navigator.geolocation.getCurrentPosition(function(position){
+            
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
 
-          userMarker = new google.maps.Marker({
-            icon: icon,
-            map: map,
-            title: "USER"
-          })
+              var icon = {
+                url: 'img/profileface.svg', // url
+                scaledSize: new google.maps.Size(50, 50), // scaled size
+              };
 
-          var infoWindow = new google.maps.InfoWindow({
-            content: userInloged[0].userName + " score" + userInloged[0].userScore
-          })
-
-          userMarker.addListener('click', function() {
-            infoWindow.open(map, userMarker);
-          });
-
-
-          //PLACE OUT QUESTIONS
-         $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
-         .done((data) => {
-             data = JSON.parse(data)
-
-             data.forEach(function (quest) {
-               var qPos = {lat: parseFloat(quest.lat), lng: parseFloat(quest.long)};
-
-               qMark = new google.maps.Marker({
-                 position: qPos,
-                 map: map
-               })
-
-               circle = new google.maps.Circle({
-                 map: map,
-                 radius: 20,
-                 fillColor: '#AA0000'
-               })
-               circle.bindTo('center', qMark, 'position');
-               
-               qAr.push({radius: circle, quest: quest, marker: qMark})
-             })
-
-             
-             //FIX SO ITS IN THE DONE FUCTION ON ROW61-76 JUST FOR BEING COOLER CODE!
-             qAr.forEach(function(qInfo){
-              if(qInfo.radius.getBounds().contains(userMarker.position)){
-
-                $(".startQuestion").css({ display: "flex" }).html("You Found a Question, Tap to Start")
-          
-                $(".startQuestion").click(function(){
-                $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qInfo.quest.qId)})
-                .done((data) => {
-                    console.log(data)
-                    if(data == "OK"){
-                        createQuestion(qInfo)
-                        console.log(qInfo)
-                    }else{
-                        $(".startQuestion").css({ display: "flex" }).html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
-                    }
-                })
+              userMarker = new google.maps.Marker({
+                icon: icon,
+                map: map,
+                title: "USER"
               })
-              }else{
-                $(".startQuestion").css({ display: "none" })
-              }
-              
-            })
-       })
-          
 
-        
+              var infoWindow = new google.maps.InfoWindow({
+                content: userInloged[0].userName + " score" + userInloged[0].userScore
+              })
 
-          // PLACE ONE TIME
-          navigator.geolocation.getCurrentPosition(function(position) {
+              userMarker.addListener('click', function() {
+                infoWindow.open(map, userMarker);
+              });
 
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-  
-            map.setCenter(pos);
-
-            userMarker.setPosition(pos)
-
-            }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-
+          })
 
           //UPDATE
             navigator.geolocation.watchPosition(function(position) {
+
             var pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+            
+
+            map.setCenter(pos);
 
             userMarker.setPosition(pos)
 
@@ -135,7 +80,6 @@
                 .done((data) => {
                     data = JSON.parse(data)
                     data.forEach(function (enemy) {
-                      console.log(enemy)
                         // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
                         if (enemy.userId != userInloged[0].userId) {
                             // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
@@ -169,7 +113,6 @@
                             }else{
                                 // IF enemyList conatin Change enemy change update cords. 
                                 enemyList.forEach((e) =>{
-                                  console.log(e)
                                     if(e.id == enemy.userId){
                                       e.enemyPos.setPosition(pos)
                                     }
@@ -177,16 +120,77 @@
                             }
                         }
                     })
-                })   
+                }) 
+
+                $.get('php/questions.php', { activite: "getAllQuestion", userId: userInloged[0].userId})
+                .done((data) => {
+                    for (var i = 0; i < qAr.length; i++) {
+                      qAr[i].marker.setMap(null);
+                      qAr[i].radius.setMap(null);
+                    }
+
+
+                    data = JSON.parse(data)
+
+                    questions = data
+                    data.forEach(function (quest) {
+                      var qPos = {lat: parseFloat(quest.lat), lng: parseFloat(quest.long)};
+
+                      qMark = new google.maps.Marker({
+                        position: qPos,
+                        map: map
+                      })
+
+                      circle = new google.maps.Circle({
+                        map: map,
+                        radius: 105,
+                        fillColor: '#FEFCE7'
+                      })
+                      circle.bindTo('center', qMark, 'position');
+                    
+                    qAr.push({radius: circle, quest: quest, marker: qMark})
+                  })
+
+                  qAr.forEach(function(qInfo){
+                    if(qInfo.radius.getBounds().contains(userMarker.position)){
+                      $(".startQuestion").css({ display: "flex" })
+                      $(".startQuestion").html("You Found a Question, Tap to Start")
+                
+                      $(".startQuestion").click(function(){
+                      $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qInfo.quest.qId)})
+                      .done((data) => {
+                          console.log(data)
+                          if(data == "OK"){
+                              createQuestion(qInfo)
+                          }else{
+                              $(".startQuestion").css({ display: "flex" })
+                              $(".startQuestion").html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
+                          }
+                      })
+                    })
+                    }else{
+                      $(".startQuestion").css({ display: "none" })
+                    }
+                    
+                  })
+
+                })
+
+                
+                
+                
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
-          });    
+          });
+              
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
+        
       }
+    
 
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -241,11 +245,11 @@ function createQuestion(qInfo) {
                     appendTo: ".questionAnswer"
                 }).click(function(){
                     if(this.innerHTML == qInfo.quest.alt1){
-                        console.log("YES")
                         QuestionFinish("RightAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
+                        qInfo.radius.fillColor = "#F3952A"
                     }else{
-                        console.log("NO")
                         QuestionFinish("WrongAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
+                        qInfo.radius.fillColor = "#DC2521"
                     }
                 })  
             }
@@ -299,6 +303,10 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
       console.log("Wrong Answer")
   }
 
+  qMarker.setMap(null)
+  qRadius.setMap(null)
+
+
   //MAKE QUESTION + CIRCLE VISIBLE FALSE -> GET.BOUNDS() SET THEN TO FALSE! ( I THINK <3 )
 
   $.get('php/questions.php', { activite: "isNotPlaying", questionID: parseInt(quest.qId)})
@@ -330,12 +338,6 @@ function timerStop(){
 }
 
 
-function DisplayQuestTest(){
-  $(".questionText").html("HELLO HELLO HELLO")
-  $(".questionWrapper").css({display: "flex"})
-  $(".questionAnswer").css({display: "grid"}).html("<div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div><div>ANSWER 1</div>")
-  Timer()
-}
 
 
 
