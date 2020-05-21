@@ -124,6 +124,7 @@ input[type=text]:valid {
 }
 
 .userInfo_content {
+    font-size: 12px;
     flex-direction: column;
     justify-content: center;
 }

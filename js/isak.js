@@ -3,7 +3,7 @@
 $("<div>", {
     html: 'KOSMOVO',
     appendTo:'.logoContainer > div'
-}).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '30px', 'text-align': 'center'})
+}).css({'color': 'var(--main-yellow-color)', 'font-family': 'Molot', 'font-size': '6vw', 'text-align': 'center'})
 
 /* $("<div>", {
     html: '2020',
@@ -47,43 +47,45 @@ function scoreboard() {
         }
 
         topTen.forEach(function(element,index){
-            $('<div>', {
-                id: index,
-                appendTo: '.scoreboard_wrapper'
-            }).click(function(e){
-                $.get('php/userCords.php', { userId: element.userId})
-                .done((data) =>{
-                    data = JSON.parse(data)
-                    var pos = {
-                        lat: parseFloat(data[0].lat),
-                        lng: parseFloat(data[0].lng),
-                      };
-                      backToGame()
-                      map.setZoom(16)
-                      map.panTo(pos)
+            if(element != undefined){
+                $('<div>', {
+                    id: index,
+                    appendTo: '.scoreboard_wrapper'
+                }).click(function(e){
+                    $.get('php/userCords.php', { userId: element.userId})
+                    .done((data) =>{
+                        data = JSON.parse(data)
+                        var pos = {
+                            lat: parseFloat(data[0].lat),
+                            lng: parseFloat(data[0].lng),
+                        };
+                        backToGame()
+                        map.setZoom(16)
+                        map.panTo(pos)
+                    })
                 })
-            })
 
-            $('<div>',{
-                html: index + 1,
-                appendTo: "#" + index
-            })
-            $('<div>',{
-                html: "  /  ",
-                appendTo: "#" + index
-            })
-            $('<div>',{
-                html: element.userName ,
-                appendTo: "#" + index
-            })
-            $('<div>',{
-                html: "  /  ",
-                appendTo: "#" + index
-            })
-            $('<div>',{
-                html: element.userScore,
-                appendTo: "#" + index
-            })
+                $('<div>',{
+                    html: index + 1,
+                    appendTo: "#" + index
+                })
+                $('<div>',{
+                    html: "  /  ",
+                    appendTo: "#" + index
+                })
+                $('<div>',{
+                    html: element.userName ,
+                    appendTo: "#" + index
+                })
+                $('<div>',{
+                    html: "  /  ",
+                    appendTo: "#" + index
+                })
+                $('<div>',{
+                    html: element.userScore,
+                    appendTo: "#" + index
+                })
+            }
         });
 
     })
@@ -97,3 +99,4 @@ function compareIndexFound(a, b) {
 
 
   
+

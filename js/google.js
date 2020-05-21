@@ -151,7 +151,7 @@
 
                         circle = new google.maps.Circle({
                           map: map,
-                          radius: 105,
+                          radius: 70,
                           fillColor: '#DC2521'
                         })
                         circle.bindTo('center', qMark, 'position');
@@ -165,17 +165,18 @@
                                 $(".startQuestion").css({ display: "flex" })
                                 $(".startQuestion").html("You Found a Question, Tap to Start")
                           
-                                $(".startQuestion").click(function(e){
-                                e.preventDefault()
+                                $(".startQuestion").click(function(){
+                                qStop = true;
                                 $(".startQuestion").css({ display: "none" })
                                 $.get('php/questions.php', { activite: "checkifplayed", questionID: parseInt(qAr[i].quest.qId)})
                                 .done((data) => {
-                                    console.log(data)
                                     if(data == "OK"){
-                                        qStop = true;
+                                        qAr[i].marker.setMap(null)
+                                        qAr[i].radius.setMap(null)
                                         // OPEN TWO QUESTION? WHATAFUCK? PROBLEM? MAYBE? LET JUST THINK ABOUT THE GAME DOOM, THERE WAS ALOT OF THINGS IN THERE CODE THAT WORKED BUT THEY DIDENT KNOW WHY
-                                        createQuestion(qAr[i])  
+                                        createQuestion(qAr[i])
                                     }else{
+                                        $(".startQuestion").unbind("click")
                                         $(".startQuestion").css({ display: "flex" })
                                         $(".startQuestion").html("Someone else is playing! If the other team answer wrong you can try! If the question goes away, the other team answerd correctly")
                                     }
@@ -244,7 +245,6 @@ function createQuestion(qInfo) {
             let questionAlt = []
             questionAlt.push(qInfo.quest.alt1, qInfo.quest.alt2, qInfo.quest.alt3, qInfo.quest.alt4)
             questionAlt = shuffle(questionAlt)
-            console.log(questionAlt)
 
             // CLEAR BOX
             $(".questionAnswer").html("")
@@ -255,14 +255,14 @@ function createQuestion(qInfo) {
                     appendTo: ".questionAnswer"
                 }).click(function(){
                     if(this.innerHTML == qInfo.quest.alt1){
-                        QuestionFinish("RightAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
+                        QuestionFinish("RightAnswer", qInfo.quest)
+                        alert("Correct Answer, You Earned " + qInfo.quest.score)
                     }else{
-                        QuestionFinish("WrongAnswer", qInfo.quest, qInfo.marker, qInfo.radius)
+                        QuestionFinish("WrongAnswer", qInfo.quest)
+                        alert("Wrong Answer")
                     }
                 })  
             }
-
-            Timer()
         
 }
 
@@ -278,29 +278,23 @@ function shuffle(a) {
 }
 
 
-function QuestionFinish(whatHappend, quest, qMarker, qRadius){
+function QuestionFinish(whatHappend, quest){
 
   $(".questionWrapper").css({display: "none"})
-  timerStop()
-  console.log(quest)
-  if(whatHappend == "noTime"){
-      $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})
-      .done((data) =>{
 
-      })
-      console.log("NO TIME")
-  }else if(whatHappend == "RightAnswer"){
+  if(whatHappend == "RightAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 1})
       .done((data) =>{
-
+        $.get('php/updateScore.php', {userId: userInloged[0].userId, score: quest.score})
+          .done((data) =>{
+            $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
+              .done((data) =>{
+                data = JSON.parse(data)
+               $(".user_score").html('Score: ' + data[0].userScore)
+            })
+          })
       })
-      $.get('php/updateScore.php', {userId: userInloged[0].userId, score: quest.score})
-      .done((data) =>{
-        $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
-        .done((data) =>{
-          $(".user_score").html('Score: ' + data)
-        })
-      })
+      
   }else if(whatHappend == "WrongAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})
       .done((data) =>{
@@ -309,8 +303,6 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
       console.log("Wrong Answer")
   }
 
-  qMarker.setMap(null)
-  qRadius.setMap(null)
   qStop = false;
 
 
@@ -322,27 +314,6 @@ function QuestionFinish(whatHappend, quest, qMarker, qRadius){
   })
 }
 
-let sec = 30;
-function Timer(){
-  $(".questionTimer").html(sec)
-  timer = setInterval(timerPulse, 1000)
-}
-
-function timerPulse(){
-  sec = sec - 1
-  $(".questionTimer").html(sec)
-  if(sec <= 0){
-    timerStop()
-    $(".questionTimer").removeClass("questionTimerShake")
-  }else if(sec <= 10){
-    $(".questionTimer").addClass("questionTimerShake")
-  }
-}
-
-function timerStop(){
-  clearInterval(timer)
-  sec = 30;
-}
 
 
 
