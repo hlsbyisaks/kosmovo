@@ -97,7 +97,8 @@ input[type=text]:valid {
     color: var(--main-lightblue-color);
 }
 
-#loginErrorMsg {
+#loginErrorMsg, #errorMSG {
+    display: none;
     background-color: var(--main-red-color);
     color: var(--main-yellow-color);
     border: 2px solid var(--main-yellow-color);
@@ -107,7 +108,14 @@ input[type=text]:valid {
     transition: ease-in;
 }
 
+#errorMSG{
+    position: relative;
+}
+
 /* GAME PAGE */
+#game_page{
+    overflow-y: hidden;
+}
 
 /* HEADER */
 
@@ -325,3 +333,75 @@ input[type=text]:valid {
 }
 
 
+#scanWrapper{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    justify-content: center;
+    bottom: 21vh;
+    height: 10vh;
+    width: 100vw;
+    z-index: 10;
+    align-items: center;
+}
+
+#scanWrapper > div{
+    padding: 10px;
+    background-color: var(--main-red-color);
+}
+
+#scanWrapper *{
+    margin: 0px;
+    width: 78vw;
+}
+
+#scanWrapper h1{
+    font-family: molot;
+    text-align: center;
+    color: var(--main-yellow-color);
+}
+
+#scanInput{
+    background-color: var(--main-red-color);
+    font-size: 32px;
+    padding: 5px 0px;
+    border: 0px;
+    margin: 0px 0px 20px 0px;
+    border-bottom: 2px solid var(--main-white-color);
+    color: var(--main-yellow-color);
+    transition: border 0.6s ease;
+    text-align: center;
+    width: 45%;
+}
+
+.scanInputWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#scanButton{
+    font-family: molot;
+    color: var(--main-yellow-color);
+    font-size: 75px;
+}
+
+#scanButtonWrapper{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: absolute;
+    bottom: 3vh;
+    z-index: 11;
+}
+
+#scanButtonWrapper > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-red-color);
+    width: 18vw;
+    height: 18vw;
+    border-radius: 100px;
+}
