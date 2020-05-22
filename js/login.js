@@ -33,6 +33,13 @@ function login() {
                     userInloged = data
                     initMap()
                     setCookie(userInloged)
+
+                    $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
+                        .done((data) =>{
+                            data = JSON.parse(data)
+                            $(".user_score").html('Score: ' + data[0].userScore)
+                    })
+
                     /* send to game page with userId = data[0].userId
                     Set cookie login=true and userid */
 
@@ -75,6 +82,8 @@ function loginErrorMsg(Msg) {
         }
     });  
 }
+
+
 
 /* Elements */
 function loginPage() {

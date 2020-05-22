@@ -24,7 +24,22 @@
             </div>
         </div>
         <div id="map"></div>
-        <div class="startQuestion"></div>
+        <div id="scanButtonWrapper">
+            <div>
+                <div id="scanButton">?</div>
+            </div>
+        </div>
+        
+        <div id="scanWrapper">
+            <div>
+                <div id="errorMSG"></div>
+                <h1 id="scanHeader">Enter Code</h1>
+                <div class="scanInputWrapper">
+                    <input id="scanInput" type="text" maxlength="4">
+                </div>
+                <input id="scanInputButton" class="button" value="submit" type="button">
+            </div>
+        </div>
         <div class="questionWrapper">
             <div class="questionTimer">
             </div>
@@ -53,12 +68,13 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC815v9FSeTw1q7v8vyMsGvtdLQUXmypSI">
     </script>
     <script src="js/jquery.js"></script>
-    <script src="js/google.js"></script>
+    <script src="js/newGoogle.js"></script>
     <script src="js/page.js"></script>
     <script src="js/cookie.js"></script>
     <script src="js/createUser.js"></script>
     <script src="js/login.js"></script>
     <script src="js/logout.js"></script>
     <script src="js/isak.js"></script>
+    <script src="js/scan.js"></script>
 </body>
 </html>
