@@ -1,0 +1,407 @@
+/* ALL PAGE */
+:root{
+    --main-red-color: #DC2521;
+    --main-blue-color: #311B42;
+    --main-lightblue-color: #9c98BD;
+    --main-white-color: #FEFCE7;
+    --main-yellow-color: #F3952A;
+    
+}
+
+::placeholder { /* Firefox, Chrome, Opera */ 
+    color: var(--main-blue-color); 
+} 
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color: var(--main-blue-color);
+} 
+  
+::-ms-input-placeholder { /* Microsoft Edge */ 
+    color: var(--main-blue-color);
+} 
+
+@font-face { font-family: Allerta-Regular; src: url('fonts/Allerta-Regular.ttf'); } 
+@font-face { font-family: Molot; src: url('fonts/Molot.otf');}
+
+body{
+    margin: 0px;
+}
+
+body > div {
+    width: 100vw;
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+
+
+/* LoginPage */
+
+#login_page{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-red-color);
+}
+
+#loginContainer{
+    background-color: var(--main-red-color);
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginContainer > div,
+#loginContainer > input{
+    margin-bottom: 4px;
+}
+
+#username,
+input[type=text]:focus,
+input[type=text]:valid {
+  border-color: var(--main-blue-color);
+}
+
+#loginContainer > input[type=text],
+#loginContainer > input[type=password],
+#loginContainer > input[type=email] {
+    background-color: var(--main-red-color);
+    font-size: 20px;
+    padding: 5px;
+    border: 0px;
+    border-bottom: 2px solid var(--main-white-color);
+    color: var(--main-yellow-color);
+    transition: border 0.6s ease;
+}
+
+.button {
+    background-color: var(--main-yellow-color);
+    color: var(--main-red-color);
+    font-size: 20px;
+    padding: 5px;
+    border: 0px solid var(--main-blue-color);
+    width: 100%;
+    font-family: Molot;
+    
+}
+
+.button:hover {
+    color: var(--main-lightblue-color);
+}
+
+#loginErrorMsg, #errorMSG {
+    display: none;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+    border: 2px solid var(--main-yellow-color);
+    padding: 2px;
+    text-align: center;
+    font-family: Allerta-Regular;
+    transition: ease-in;
+}
+
+#errorMSG{
+    position: relative;
+}
+
+/* GAME PAGE */
+#game_page{
+    overflow-y: hidden;
+}
+
+/* HEADER */
+
+.header{
+    width: calc(100vw-4px);
+    height: 5vh;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+}
+
+.userInfo {
+    position: absolute;
+    display: flex;
+}
+
+.userInfo_content {
+    font-size: 12px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user_name, .user_score{
+    font-family: Allerta-Regular;
+    width: 100px;
+    margin-left: 2px;
+}
+
+.logout_button, .score_button {
+    text-align: center;
+    margin-left: 2px;
+    font-size: 16px;
+    height: 5vh;
+}
+
+.logoContainer {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px;
+}
+
+#map{
+    height: 95vh;
+    z-index: 1;
+}
+
+.startQuestion{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 5vw;
+    bottom: 10vh;
+    height: 10vh;
+    width: 90vw;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+    z-index: 2;
+}
+
+.questionWrapper{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 5vw;
+    top: 14vh;
+    height: 80vh;
+    width: 90vw;
+    background-color: var(--main-red-color);
+    color: var(--main-yellow-color);
+    z-index: 2;
+}
+
+
+
+
+.questionWrapperInside{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 98%;
+    width: 98%;
+    background-color: var(--main-white-color);
+    font-family: Molot;
+}
+
+.questionWrapper > div > div{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 0px;
+}
+
+.questionText{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0% 10%;
+    text-align: center;
+}
+
+.questionTimer{
+    position: absolute;
+    font-size: 34px;
+    font-family: Molot;
+    top: 15px;
+    right: 15px;
+}
+
+.questionTimerShake{
+    transition: 3s;
+    animation: 1s shake infinite;
+    color: red;
+    top: 0px;
+    right: 25px;
+    font-size: 80px;
+}
+
+@keyframes shake {
+    0% { transform: skewX(-15deg); }
+    5% { transform: skewX(15deg); }
+    10% { transform: skewX(-15deg); }
+    15% { transform: skewX(15deg); }
+    20% { transform: skewX(0deg); }
+    100% { transform: skewX(0deg); }  
+  }
+  
+
+.TimeLeft{
+    width: 100%;
+    background-color: teal;
+    transition: width 1s linear;
+}
+
+.TimeGone{
+    background-color: tomato;
+}
+
+.questionAnswer{
+    display: grid;
+    grid-gap: 10px;
+    margin: 10px;
+    grid-template-columns: repeat(2,1fr);
+    flex-grow: 10;
+}
+
+.questionAnswer > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    border: 1px solid black;
+    height: 100%;
+    width: 100%; 
+}
+
+/* SCOREBOARD PAGE */
+#scoreboard_page {
+    background-color: var(--main-red-color);
+}
+
+.scoreboard_wrapper {
+    flex-direction: column;
+    font-family: allerta-regular;
+    color: var(--main-yellow-color);
+    font-size: 26px;
+}
+
+
+
+/* ADMIN PAGE */
+
+.scoreboard_flex{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.scoreboard_wrapper{
+    display: grid;
+    grid-template-rows: repeat(10,10%);
+    height: 100%;
+    justify-content: center;
+}
+
+.scoreboard_wrapper > div{
+    display: flex;
+    width: 80vw;
+    max-width: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.scoreboard_wrapper > div > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.score_css{
+    color: var(--main-yellow-color);
+    text-align: center;
+    font-family: Molot;
+    font-size: 75px;
+}
+
+.header_score_css{
+    color: var(--main-yellow-color);
+    text-align: center;
+    font-family: Molot;
+    font-size: 23px;
+}
+
+
+#scanWrapper{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    justify-content: center;
+    bottom: 21vh;
+    height: 10vh;
+    width: 100vw;
+    z-index: 10;
+    align-items: center;
+}
+
+#scanWrapper > div{
+    padding: 10px;
+    background-color: var(--main-red-color);
+}
+
+#scanWrapper *{
+    margin: 0px;
+    width: 78vw;
+}
+
+#scanWrapper h1{
+    font-family: molot;
+    text-align: center;
+    color: var(--main-yellow-color);
+}
+
+#scanInput{
+    background-color: var(--main-red-color);
+    font-size: 32px;
+    padding: 5px 0px;
+    border: 0px;
+    margin: 0px 0px 20px 0px;
+    border-bottom: 2px solid var(--main-white-color);
+    color: var(--main-yellow-color);
+    transition: border 0.6s ease;
+    text-align: center;
+    width: 45%;
+}
+
+.scanInputWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#scanButton{
+    font-family: molot;
+    color: var(--main-yellow-color);
+    font-size: 75px;
+}
+
+#scanButtonWrapper{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: absolute;
+    bottom: 3vh;
+    z-index: 9;
+}
+
+#scanButtonWrapper > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-red-color);
+    width: 18vw;
+    height: 18vw;
+    border-radius: 100px;
+}
