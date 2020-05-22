@@ -34,12 +34,13 @@ function errorMSG(msg){
 let isShowing = false
 $("#scanButtonWrapper").click(()=>{
     if(!isShowing){
-        $("#scanWrapper").css({display: "flex"})
+        $("#scanWrapper").css({"bottom": "21vh"})
         $("#errorMSG").css({display: "none"})
         $("#scanInput").val("")
         isShowing = true
     }else{
-        $("#scanWrapper").css({display: "none"})
+
+        $("#scanWrapper").css({"bottom": "-50vh"})
         isShowing = false
     }
    

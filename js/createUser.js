@@ -1,27 +1,31 @@
 function createUser() {
     if ($('#username').val() && $('#password').val() && $('#repeatPassword').val() && $('#email').val()) {
-        if ($('#password').val() == $('#repeatPassword').val()) {
-            let username = $('#username').val()
-            let password = $('#password').val()
-            let mail = $('#email').val()
+        if($('#username').val().length < 10){
+            if ($('#password').val() == $('#repeatPassword').val()) {
+                let username = $('#username').val()
+                let password = $('#password').val()
+                let mail = $('#email').val()
 
-            $.get('php/register.php', {
-                username: username,
-                password: password,
-                mail: mail
-            })
-            .done((data) => {
-                if (data == 'Username already exists') {
-                    loginErrorMsg('Username already exists')
-                } else {
-                    loginPage()
-                    $("#username").val(username)
-                    $("#password").val(password)
-                    loginErrorMsg('Account was Created!')
-                }
-            })
-        } else {
-            loginErrorMsg('Passwords do not match')
+                $.get('php/register.php', {
+                    username: username,
+                    password: password,
+                    mail: mail
+                })
+                .done((data) => {
+                    if (data == 'Username already exists') {
+                        loginErrorMsg('Username already exists')
+                    } else {
+                        loginPage()
+                        $("#username").val(username)
+                        $("#password").val(password)
+                        loginErrorMsg('Account was Created!')
+                    }
+                })
+            } else {
+                loginErrorMsg('Passwords do not match')
+            }
+        }else{
+            loginErrorMsg('Username to long, can only contain 10 characters')
         }
     } else {
         loginErrorMsg('Please fill all forms')
@@ -54,7 +58,7 @@ function registerPage() {
     $("<div>", {
         'id': 'logo',
         appendTo:'#loginContainer'
-    }).css({'background-image': 'url(img/logo.png)', 'width': '100%', 'height': '235px', 
+    }).css({'background-image': 'url(img/logo.png)', 'width': '100%', 'height': '235px','background-position: center'
     'background-size': 'contain', 'background-repeat': 'no-repeat', 'margin-bottom': '20px'})
 
     $("<p>", {
