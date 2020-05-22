@@ -59,6 +59,7 @@ function initMap() {
     })
 
 
+
       setInterval(() => {
           updateUser()
           getEnemy()
@@ -69,6 +70,19 @@ function initMap() {
 
 
 function getEnemy(){
+  let highestScore, myScore
+  
+  $.get("php/getHighestscore.php")
+        .done((data) =>{
+          data = JSON.parse(data)
+          highestScore = data[0].userScore
+  })
+
+  $.get("php/getPlayerScore.php", {userId: userInloged[0].userId})
+          .done((data) =>{
+            data = JSON.parse(data)
+            myScore = data[0].userScore
+})
     
     $.get('php/users.php')
     .done((data) => {
@@ -87,7 +101,7 @@ function getEnemy(){
                     var icon = {
                       url: 'img/enemyface.svg', // url
                       scaledSize: new google.maps.Size(50, 50), // scaled size
-                  };
+                    };
 
                     var enemyPos = new google.maps.Marker({
                       position: pos,
@@ -95,26 +109,42 @@ function getEnemy(){
                       map:map
                     })
 
-                    var infoWindow = new google.maps.InfoWindow({
-                      content: enemy.userName + " score" + enemy.userScore
-                    })
-        
-                    enemyPos.addListener('click', function() {
-                      infoWindow.open(map, enemyPos);
-                    });
+                    enemyList.push({ enemyPos: enemyPos, id: enemy.userId, score: enemy.userScore })
+                }else{                 
+                        enemyList.forEach((e) =>{
 
-                    enemyList.push({ enemyPos: enemyPos, id: enemy.userId })
-                }else{
-                    // IF enemyList conatin Change enemy change update cords. 
-                    enemyList.forEach((e) =>{
-                        if(e.id == enemy.userId){
-                          e.enemyPos.setPosition(pos)
-                        }
-                    })
+                          var icon = {
+                            url: "",
+                            scaledSize: new google.maps.Size(50, 50), // scaled size
+                          };
+
+                          if(e.id == enemy.userId){
+                            e.enemyPos.setPosition(pos)
+                            e.score = enemy.userScore
+                            if(myScore != highestScore){
+                              icon.url = 'img/profileface.svg'
+                              userMarker.setIcon(icon)
+                              if(e.score == highestScore){
+                                icon.url = 'img/enemyfaceWIN.svg'
+                                e.enemyPos.setIcon(icon)
+                              }else{
+                                icon.url = 'img/enemyface.svg'
+                                e.enemyPos.setIcon(icon)
+                              }
+                            }else{
+                              icon.url = 'img/profilefaceWIN.svg'
+                              userMarker.setIcon(icon)
+                              icon.url = 'img/enemyface.svg'
+                              e.enemyPos.setIcon(icon)
+                            }
+                          }
+                        })                  
+                  
                 }
             }
         })
-    }) 
+    })
+    
 }
 
 function updateUser(){
@@ -159,6 +189,15 @@ function placeQuestion(){
                 map: map
             })
 
+            var codeWindow = new google.maps.InfoWindow({
+              content: quest.code
+            })
+  
+            qMark.addListener('click', function() {
+              codeWindow.open(map, this);
+            });
+
+
             circle = new google.maps.Circle({
                 map: map,
                 radius: 10,
@@ -188,7 +227,8 @@ function checkValue(value, arr) {
 
 
 function createQuestion(quest) {
-            
+  
+  $("#scanButtonWrapper").css({display: "none"})
   $.get('php/questions.php', { activite: "isPlaying", questionID: parseInt(quest.qId)})
       .done((data) =>{
 
@@ -227,6 +267,9 @@ function createQuestion(quest) {
 function QuestionFinish(whatHappend, quest){
 
   $(".questionWrapper").css({display: "none"})
+  $("#scanButtonWrapper").css({display: "flex"})
+  $("#scanWrapper").css({display: "flex"})
+  $("#scanButtonWrapper").click()
 
   if(whatHappend == "RightAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 1})
@@ -244,17 +287,27 @@ function QuestionFinish(whatHappend, quest){
   }else if(whatHappend == "WrongAnswer"){
       $.get('php/userplayed.php', { activite: "insert", questionID: parseInt(quest.qId), userId: userInloged[0].userId, correct: 0})
       .done((data) =>{
+        $.get('php/updateScore.php', {userId: userInloged[0].userId, score: 30})
+          .done((data) =>{
+            $.get('php/getPlayerScore.php', {userId: userInloged[0].userId})
+              .done((data) =>{
+                data = JSON.parse(data)
+               $(".user_score").html('Score: ' + data[0].userScore)
+            })
+          })
 
       })
       console.log("Wrong Answer")
+
   }
+
 
   //MAKE QUESTION + CIRCLE VISIBLE FALSE -> GET.BOUNDS() SET THEN TO FALSE! ( I THINK <3 )
 
   $.get('php/questions.php', { activite: "isNotPlaying", questionID: parseInt(quest.qId)})
       .done((data) =>{
-
   })
+
 }
 
 function shuffle(a) {
