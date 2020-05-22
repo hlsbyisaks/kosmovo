@@ -76,75 +76,76 @@ function getEnemy(){
         .done((data) =>{
           data = JSON.parse(data)
           highestScore = data[0].userScore
-  })
-
-  $.get("php/getPlayerScore.php", {userId: userInloged[0].userId})
+          $.get("php/getPlayerScore.php", {userId: userInloged[0].userId})
           .done((data) =>{
             data = JSON.parse(data)
             myScore = data[0].userScore
-})
-    
-    $.get('php/users.php')
-    .done((data) => {
-        data = JSON.parse(data)
-        data.forEach(function (enemy) {
-            // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
-            if (enemy.userId != userInloged[0].userId) {
-                // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
-                let pos = {
-                  lat: parseFloat(enemy.lat),
-                  lng: parseFloat(enemy.lng)
-                }
-
-                if (!checkValue(enemy.userId, enemyList)) {
-
-                    var icon = {
-                      url: 'img/enemyface.svg', // url
-                      scaledSize: new google.maps.Size(50, 50), // scaled size
-                    };
-
-                    var enemyPos = new google.maps.Marker({
-                      position: pos,
-                      icon: icon,
-                      map:map
-                    })
-
-                    enemyList.push({ enemyPos: enemyPos, id: enemy.userId, score: enemy.userScore })
-                }else{                 
-                        enemyList.forEach((e) =>{
-
-                          var icon = {
-                            url: "",
-                            scaledSize: new google.maps.Size(50, 50), // scaled size
-                          };
-
-                          if(e.id == enemy.userId){
-                            e.enemyPos.setPosition(pos)
-                            e.score = enemy.userScore
-                            if(myScore != highestScore){
-                              icon.url = 'img/profileface.svg'
-                              userMarker.setIcon(icon)
-                              if(e.score == highestScore){
-                                icon.url = 'img/enemyfaceWIN.svg'
-                                e.enemyPos.setIcon(icon)
-                              }else{
-                                icon.url = 'img/enemyface.svg'
-                                e.enemyPos.setIcon(icon)
-                              }
-                            }else{
-                              icon.url = 'img/profilefaceWIN.svg'
-                              userMarker.setIcon(icon)
-                              icon.url = 'img/enemyface.svg'
-                              e.enemyPos.setIcon(icon)
-                            }
+            $.get('php/users.php')
+              .done((data) => {
+                  data = JSON.parse(data)
+                  data.forEach(function (enemy) {
+                      // IF USERS IS INLOGED USER DO NOTHING ELSE DO...
+                      if (enemy.userId != userInloged[0].userId) {
+                          // IF enemyList Dosent Contain enemy make enemy object and push in to Enemylist. We use this if someone would registrate when u already inloged.
+                          let pos = {
+                            lat: parseFloat(enemy.lat),
+                            lng: parseFloat(enemy.lng)
                           }
-                        })                  
-                  
-                }
-            }
-        })
-    })
+
+                          if (!checkValue(enemy.userId, enemyList)) {
+
+                              var icon = {
+                                url: 'img/enemyface.svg', // url
+                                scaledSize: new google.maps.Size(50, 50), // scaled size
+                              };
+
+                              var enemyPos = new google.maps.Marker({
+                                position: pos,
+                                icon: icon,
+                                map:map
+                              })
+
+                              enemyList.push({ enemyPos: enemyPos, id: enemy.userId, score: enemy.userScore })
+                          }else{                 
+                                  enemyList.forEach((e) =>{
+
+                                    var icon = {
+                                      url: "",
+                                      scaledSize: new google.maps.Size(50, 50), // scaled size
+                                    };
+
+                                    if(e.id == enemy.userId){
+                                      e.enemyPos.setPosition(pos)
+                                      e.score = enemy.userScore
+                                      if(myScore != highestScore){
+                                        icon.url = 'img/profileface.svg'
+                                        userMarker.setIcon(icon)
+                                        if(e.score == highestScore){
+                                          icon.url = 'img/enemyfaceWIN.svg'
+                                          e.enemyPos.setIcon(icon)
+                                        }else{
+                                          icon.url = 'img/enemyface.svg'
+                                          e.enemyPos.setIcon(icon)
+                                        }
+                                      }else{
+                                        icon.url = 'img/profilefaceWIN.svg'
+                                        userMarker.setIcon(icon)
+                                        icon.url = 'img/enemyface.svg'
+                                        e.enemyPos.setIcon(icon)
+                                      }
+                                    }
+                                  })                  
+                            
+                          }
+                      }
+                  })
+              })
     
+          })
+  })
+
+  
+
 }
 
 function updateUser(){
